@@ -1,0 +1,24 @@
+<div ng-controller='AdminCtrl' class='container'>
+    <h1>team creation</h1>
+    <form role='form'>
+      <div class='form-group'>
+        <div class='input-group'>
+          <input ng-model='year' class='form-control' placeholder='year' id='username' />
+          <input ng-model='group' class='form-control' placeholder='group' id='category' />
+          <input ng-model='category' class='form-control' placeholder='category' id='habit' />
+
+          <span class='input-group-btn'>
+            <button ng-click='addTeam()' class='btn btn-default post-btn'>Add Team</button>
+          </span>
+        </div>
+      </div>
+    </form>
+    <h1>alumni</h1>
+    <ul class='list-group'>
+      <li ng-repeat="user in users" class='list-group-item' id='user-line'>
+        <strong>Username: {{ user.username }}</strong>
+        <span>Name: {{ user.name }}</span>
+        <span>Year: {{ post.year }}</span>
+      </li>
+    </ul>
+</div>

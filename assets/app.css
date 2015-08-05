@@ -1,0 +1,35 @@
+#username {
+  width: 200px;
+  height: 40px;
+  display: block;
+}
+#category {
+  margin-left: 10px;
+  width: 200px;
+  height: 40px;
+  display: block;
+}
+#habit {
+  margin-left: 10px;
+  width: 200px;
+  height: 40px;
+  display: block;
+}
+#timesperweek {
+  margin-left: 10px;
+  width: 200px;
+  height: 40px;
+  display: block;
+}
+h1 {
+  color: #008000;
+}
+.input-form {
+  width: 200px;
+}
+#login-btn {
+  width: 200px;
+}
+#user-line {
+  width: 400px;
+}

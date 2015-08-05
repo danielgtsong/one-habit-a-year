@@ -1,0 +1,24 @@
+<div ng-controller='FormCtrl' class='container'>
+    <h1>Form</h1>
+    <form role='form'>
+      <div class='form-group'>
+        <div class='input-group'>
+          <input ng-model='username' class='form-control' placeholder='username' id='username' />
+          <!-- <input ng-model='category' class='form-control' placeholder='category' id='category' /> -->
+          <select ng-model='category' class="form-control" id='category'>
+            <option value="" selected disabled>Category</option>
+            <option>Physical</option>
+            <option>Spiritual</option>
+            <option>Intellectual</option>
+            <option>Other</option>
+          </select>
+          <input ng-model='habit' class='form-control' placeholder='habit' id='habit' />
+          <input ng-model='timesperweek' class='form-control' placeholder='timesperweek' id='timesperweek' />
+
+          <span class='input-group-btn'>
+            <button ng-click='addPost()' class='btn btn-default post-btn'>Add Post</button>
+          </span>
+        </div>
+      </div>
+    </form>
+</div>
