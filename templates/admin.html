@@ -1,11 +1,11 @@
 <div ng-controller='AdminCtrl' class='container'>
     <h1>admin</h1>
-    <h3 style='display: inline;'>teams</h3> <a class="btn btn-default" href="/#/team" role="button">Teams</a>
+    <h3 style='display: inline;'>teams</h3> <a class="btn btn-default" href="/#/team" role="button">Manage Teams</a>
     <ul class='list-group'>
       <li ng-repeat="team in teams" class='list-group-item' id='team-line'>
-        <strong>Team: {{ user.username }}</strong>
-        <span>Users: {{ team.users }}</span>
+        <strong>Team: {{ team.team_name }}</strong>
         <span>Year: {{ team.year }}</span>
+        <span>Members: [ {{ team.members[0].name }}, {{ team.members[1].name }} ]</span>
       </li>
     </ul>
     <h3>users</h3>
@@ -13,8 +13,7 @@
       <li ng-repeat="user in users" class='list-group-item' id='user-line'>
         <strong>Username: {{ user.username }}</strong>
         <span>Name: {{ user.name }}</span>
-        <span>Year: {{ post.year }}</span>
-        <button class="btn btn-default" type="submit">Add</button>
+        <span>Year: {{ user.year }}</span>
       </li>
     </ul>
 </div>

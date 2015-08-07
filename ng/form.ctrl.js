@@ -1,23 +1,24 @@
-angular.module('app').controller('FormCtrl', function($scope, PostsSvc) {
-  $scope.posts = []
-  $scope.addPost = function() {
-    if ($scope.username && $scope.category && $scope.habit && $scope.timesperweek) {
-      // $http.post('/api/posts', {
-      PostsSvc.create({
-        username: $scope.username,
-        category: $scope.category,
-        habit: $scope.habit,
-        timesperweek: $scope.timesperweek
-      }).success(function (post) {
-        $scope.posts.unshift(post)
-        $scope.username = null
+angular.module('app').controller('FormCtrl', function($scope, FormsSvc) {
+  // $scope.forms = []
+  $scope.user = $scope.currentUser
+  $scope.habit = $scope.user.current_habit // set to the current user's habit
+  $scope.week = FormsSvc.getCurrentWeek() // set to the current week
+
+  $scope.addForm = function() {
+      FormsSvc.create({
+        user: $scope.user.username,
+        category: $scope.user.habit.category,
+        habit: $scope.user.habit.current_habit,
+        timesperweek: $scope.user.habit.timesperweek,
+        week: $scope.week      
+      }).success(function (form) {
+        $scope.user = null
         $scope.category = null
         $scope.habit = null
-        $scope.timesperweek = null
+        $scope.week = null  
       })
-    }
   }
-  PostsSvc.fetch().success(function (posts) {
-    $scope.posts = posts
-  })
+  // FormsSvc.fetch().success(function (forms) {
+  //   $scope.forms = forms
+  // })
 })

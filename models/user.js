@@ -8,7 +8,8 @@ var user = db.Schema({
   year: { type: String, required: true },
   city: { type: String, required: true },
   state: { type: String, required: true },
-  country: { type: String, required: true }
+  country: { type: String, required: true },
+  current_habit: { type: String, required: false, default: '' }
 })
 module.exports = db.model('User', user)
 

@@ -4,6 +4,7 @@ var path = require('path');
 
 router.use(express.static(__dirname + '/../assets'))
 router.use(express.static(__dirname + '/../templates'))
+// router.use(express.static(__dirname + '/../bower_components'))
 
 router.get('/', function(req,res) {
   res.sendFile(path.join(__dirname, '../layouts', 'app.html'));

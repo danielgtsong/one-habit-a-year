@@ -1,24 +1,67 @@
 <div ng-controller='FormCtrl' class='container'>
     <h1>Form</h1>
+<!--     <h3>{{ success_rate }}</h3>
+    <h3>{{ weekly_goal }}</h3> -->
     <form role='form'>
       <div class='form-group'>
         <div class='input-group'>
-          <input ng-model='username' class='form-control' placeholder='username' id='username' />
-          <!-- <input ng-model='category' class='form-control' placeholder='category' id='category' /> -->
-          <select ng-model='category' class="form-control" id='category'>
-            <option value="" selected disabled>Category</option>
-            <option>Physical</option>
-            <option>Spiritual</option>
-            <option>Intellectual</option>
-            <option>Other</option>
-          </select>
-          <input ng-model='habit' class='form-control' placeholder='habit' id='habit' />
-          <input ng-model='timesperweek' class='form-control' placeholder='timesperweek' id='timesperweek' />
+          <li>{{ user.name }} </li>
+          <li>{{ user.habit.category }} </li>
+          <li>{{ user.user.habit.current_habit }} </li>
+          <li>{{ user.habit.timesperweek }} </li>
 
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Sunday
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Monday
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Tuesday
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Wednesday
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Thursday
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Friday
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Saturday
+            </label>
+          </div>
           <span class='input-group-btn'>
-            <button ng-click='addPost()' class='btn btn-default post-btn'>Add Post</button>
+            <button ng-click='addForm()' class='btn btn-default post-btn'>Add Form</button>
           </span>
         </div>
       </div>
     </form>
 </div>
+
+<!-- 
+A form allowing user to check off completion of each of their habits for each day in a week. 
+Form is displayed one week at a time. 
+Form includes weekly goal and current success rate.
+ -->

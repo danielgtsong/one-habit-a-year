@@ -1,46 +1,126 @@
 angular.module('app', ['ngRoute'])
 angular.module('app').controller('AdminCtrl', function($scope, AdminSvc) {
   $scope.users = []
-  AdminSvc.fetch().success(function (users) {
+  $scope.teams = []
+  $scope.members = []
+
+  AdminSvc.fetchUsers().success(function (users) {
     $scope.users = users
   })
+  AdminSvc.fetchTeams().success(function (teams) {
+    $scope.teams = teams
+  })
+
+  $scope.addMember = function(username) { // inefficient function
+    var i = 0
+    var found = false
+    var member = {}
+    do {
+        if ($scope.users[i].username == username) {
+          member = $scope.users[i]
+          found = true
+        }
+        i++;
+    }
+    while (i < $scope.users.length && !found);
+  	
+    // console.log('[admin.ctrl.js] $scope.users: ' + JSON.stringify($scope.users))
+    // console.log('[admin.ctrl.js] member: ' + JSON.stringify(member))
+    $scope.members.unshift(member)
+  }
+
+  $scope.removeMember = function(member) {
+    for (var i = 0; i < $scope.members.length; i++ ) {
+      if ($scope.members[i] == member) {
+        $scope.members.splice(i, 1);
+        return;
+      }
+    }
+  }
+  
+  $scope.addTeam = function() {
+    if ($scope.team_name && $scope.year && $scope.group_number && $scope.category && $scope.members) {
+      // $http.post('/api/posts', {
+      AdminSvc.createTeam({
+        team_name: $scope.team_name,
+        year: $scope.year,
+        group_number: $scope.group_number,
+        category: $scope.category,
+        members: $scope.members
+      }).success(function (team) {
+        $scope.teams.unshift(team)
+        $scope.team_name = null
+        $scope.year = null
+        $scope.group_number = null
+        $scope.category = null
+        $scope.members = null
+      })
+    }
+  }
+
+  $scope.login = function(username, password) {
+    AdminSvc.login(username, password)
+    .then(function (response) {
+      $scope.$emit('login', response.data)
+    })
+  }
 })
 angular.module('app').service('AdminSvc', function($http) {
-  this.fetch = function() {
-    return $http.get('/admin')
+  
+  var svc = this
+
+  this.fetchUsers = function() { // returns alll users
+    return $http.get('/api/admin')
   }
-  // this.create = function (admin) {
-  //   return $http.post('/api/admin', post)
-  // }
+  this.fetchTeams = function() { // returns alll teams
+    return $http.get('/api/admin/teams')
+  }
+  this.createTeam = function (team) {
+    return $http.post('/api/teams', team)
+  }
+
 })
 angular.module('app').controller('ApplicationCtrl', function($scope) {
   $scope.$on('login', function(_, user) {
+  	console.log('[application.ctrl.js] currentUser set')
     $scope.currentUser = user
   })
 })
 
-angular.module('app').controller('FormCtrl', function($scope, PostsSvc) {
-  $scope.posts = []
-  $scope.addPost = function() {
-    if ($scope.username && $scope.category && $scope.habit && $scope.timesperweek) {
-      // $http.post('/api/posts', {
-      PostsSvc.create({
-        username: $scope.username,
-        category: $scope.category,
-        habit: $scope.habit,
-        timesperweek: $scope.timesperweek
-      }).success(function (post) {
-        $scope.posts.unshift(post)
-        $scope.username = null
+angular.module('app').controller('FormCtrl', function($scope, FormsSvc) {
+  // $scope.forms = []
+  $scope.user = $scope.currentUser
+  $scope.habit = $scope.user.current_habit // set to the current user's habit
+  $scope.week = FormsSvc.getCurrentWeek() // set to the current week
+
+  $scope.addForm = function() {
+      FormsSvc.create({
+        user: $scope.user.username,
+        category: $scope.user.habit.category,
+        habit: $scope.user.habit.current_habit,
+        timesperweek: $scope.user.habit.timesperweek,
+        week: $scope.week      
+      }).success(function (form) {
+        $scope.user = null
         $scope.category = null
         $scope.habit = null
-        $scope.timesperweek = null
+        $scope.week = null  
       })
-    }
   }
-  PostsSvc.fetch().success(function (posts) {
-    $scope.posts = posts
-  })
+  // FormsSvc.fetch().success(function (forms) {
+  //   $scope.forms = forms
+  // })
+})
+angular.module('app').service('FormsSvc', function($http) {
+  // this.fetch = function() {
+  //   return $http.get('/api/forms')
+  // }
+  this.create = function (post) {
+    return $http.post('/api/forms', post)
+  }
+  this.getCurrentWeek = function() {
+  	return $http.post('/api/forms/current_week', post)
+  }
 })
 angular.module('app').controller('LoginCtrl', function($scope, UserSvc) {
   $scope.login = function(username, password) {

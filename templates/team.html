@@ -3,22 +3,38 @@
     <form role='form'>
       <div class='form-group'>
         <div class='input-group'>
+          <input ng-model='team_name' class='form-control' placeholder='team name' id='username' />
           <input ng-model='year' class='form-control' placeholder='year' id='username' />
-          <input ng-model='group' class='form-control' placeholder='group' id='category' />
+          <input ng-model='group_number' class='form-control' placeholder='group number' id='category' />
           <input ng-model='category' class='form-control' placeholder='category' id='habit' />
 
           <span class='input-group-btn'>
-            <button ng-click='addTeam()' class='btn btn-default post-btn'>Add Team</button>
+            <button ng-click='addTeam()' class='btn btn-default post-btn' ng-click='addTeam'>Add Team</button>
           </span>
         </div>
       </div>
     </form>
-    <h1>alumni</h1>
-    <ul class='list-group'>
-      <li ng-repeat="user in users" class='list-group-item' id='user-line'>
-        <strong>Username: {{ user.username }}</strong>
-        <span>Name: {{ user.name }}</span>
-        <span>Year: {{ post.year }}</span>
-      </li>
-    </ul>
+
+    <div style='float: left; display: block; width: 500px;'>
+      <h1>alumni</h1>
+      <ul class='list-group'>
+        <li ng-repeat="user in users" class='list-group-item' id='user-line'>
+          <strong>Username: {{ user.username }}</strong>
+          <span>Name: {{ user.name }}</span>
+          <span>Year: {{ user.year }}</span>
+          <button class="btn btn-default" ng-click='addMember(user.username)'>Add</button>
+        </li>
+      </ul>
+    </div>
+    <div style='float: right; display: block; width: 500px;'>
+      <h1>team</h1>
+      <ul class='list-group'>
+        <li ng-repeat="member in members" class='list-group-item' id='user-line'>
+          <strong>Username: {{ member.username }}</strong>
+          <span>Name: {{ member.name }}</span>
+          <span>Year: {{ member.year }}</span>
+          <button class="btn btn-default" ng-click='removeMember(member)'>Remove</button>
+        </li>
+      </ul>
+    </div>
 </div>

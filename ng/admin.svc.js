@@ -1,8 +1,15 @@
 angular.module('app').service('AdminSvc', function($http) {
-  this.fetch = function() {
-    return $http.get('/admin')
+  
+  var svc = this
+
+  this.fetchUsers = function() { // returns alll users
+    return $http.get('/api/admin')
   }
-  // this.create = function (admin) {
-  //   return $http.post('/api/admin', post)
-  // }
+  this.fetchTeams = function() { // returns alll teams
+    return $http.get('/api/admin/teams')
+  }
+  this.createTeam = function (team) {
+    return $http.post('/api/teams', team)
+  }
+
 })
