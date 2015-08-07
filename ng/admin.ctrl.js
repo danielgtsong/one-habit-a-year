@@ -57,10 +57,10 @@ angular.module('app').controller('AdminCtrl', function($scope, AdminSvc) {
     }
   }
 
-  $scope.login = function(username, password) {
-    AdminSvc.login(username, password)
-    .then(function (response) {
-      $scope.$emit('login', response.data)
-    })
-  }
+  // $scope.login = function(username, password) {
+  //   AdminSvc.login(username, password)
+  //   .then(function (response) {
+  //     $scope.$emit('login', response.data)
+  //   })
+  // }
 })

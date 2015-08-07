@@ -58,12 +58,12 @@ angular.module('app').controller('AdminCtrl', function($scope, AdminSvc) {
     }
   }
 
-  $scope.login = function(username, password) {
-    AdminSvc.login(username, password)
-    .then(function (response) {
-      $scope.$emit('login', response.data)
-    })
-  }
+  // $scope.login = function(username, password) {
+  //   AdminSvc.login(username, password)
+  //   .then(function (response) {
+  //     $scope.$emit('login', response.data)
+  //   })
+  // }
 })
 angular.module('app').service('AdminSvc', function($http) {
   
@@ -80,25 +80,32 @@ angular.module('app').service('AdminSvc', function($http) {
   }
 
 })
-angular.module('app').controller('ApplicationCtrl', function($scope) {
+angular.module('app').controller('ApplicationCtrl', function($scope, FormsSvc) {
   $scope.$on('login', function(_, user) {
   	console.log('[application.ctrl.js] currentUser set')
     $scope.currentUser = user
+    FormsSvc.setUser(user)
   })
 })
 
-angular.module('app').controller('FormCtrl', function($scope, FormsSvc) {
-  // $scope.forms = []
-  $scope.user = $scope.currentUser
-  $scope.habit = $scope.user.current_habit // set to the current user's habit
+angular.module('app').controller('FormsCtrl', function($scope, FormsSvc) {
+  
+  $scope.user = FormsSvc.getUser()
+
+  if(!$scope.user.current_habit) {
+    $scope.no_habit = true
+  } else {
+    $scope.current_habit = $scope.user.current_habit // set to the current user's habit
+  }
+
   $scope.week = FormsSvc.getCurrentWeek() // set to the current week
 
   $scope.addForm = function() {
-      FormsSvc.create({
-        user: $scope.user.username,
-        category: $scope.user.habit.category,
-        habit: $scope.user.habit.current_habit,
-        timesperweek: $scope.user.habit.timesperweek,
+      FormsSvc.createForm({
+        user: $scope.user.name,
+        category: $scope.user.current_habit.category,
+        habit: $scope.current_habit.description,
+        timesperweek: $scope.current_habit.timesperweek,
         week: $scope.week      
       }).success(function (form) {
         $scope.user = null
@@ -107,19 +114,38 @@ angular.module('app').controller('FormCtrl', function($scope, FormsSvc) {
         $scope.week = null  
       })
   }
-  // FormsSvc.fetch().success(function (forms) {
-  //   $scope.forms = forms
-  // })
+  $scope.addHabit = function() {
+      FormsSvc.createHabit({
+        user: $scope.user.name,
+        category: $scope.category,
+        description: $scope.description,
+        timesperweek: $scope.timesperweek,
+        week: $scope.week      
+      }).success(function (habit) {
+        $scope.habit = habit
+        $scope.category = habit.category
+        $scope.week = habit.week
+      })
+  }
 })
 angular.module('app').service('FormsSvc', function($http) {
-  // this.fetch = function() {
-  //   return $http.get('/api/forms')
-  // }
-  this.create = function (post) {
+
+  this.user = {}
+  this.setUser = function(user) {
+  	console.log('[FormsSvc] user set: ' + JSON.stringify(user))
+  	this.user = user
+  }
+  this.getUser = function() {
+  	return this.user
+  }
+  this.createForm = function (post) {
     return $http.post('/api/forms', post)
   }
   this.getCurrentWeek = function() {
-  	return $http.post('/api/forms/current_week', post)
+  	return $http.get('/api/forms/current_week')
+  }
+  this.createHabit = function(habit) {
+  	return $http.post('/api/habits', habit)
   }
 })
 angular.module('app').controller('LoginCtrl', function($scope, UserSvc) {
@@ -178,7 +204,7 @@ angular.module('app').config(function ($routeProvider) {
   .when('/', { controller: 'PostsCtrl', templateUrl: 'posts.html' })
   .when('/register', { controller: 'RegisterCtrl', templateUrl: 'register.html' })
   .when('/login', { controller: 'LoginCtrl', templateUrl: 'login.html' })
-  .when('/form', { controller: 'FormCtrl', templateUrl: 'form.html' })
+  .when('/forms', { controller: 'FormsCtrl', templateUrl: 'forms.html' })
   .when('/admin', { controller: 'AdminCtrl', templateUrl: 'admin.html' })
   .when('/team', { controller: 'AdminCtrl', templateUrl: 'team.html' })
 })

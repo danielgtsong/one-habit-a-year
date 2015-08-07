@@ -1,4 +1,6 @@
 var db = require('../database')
+var mongoose = require('mongoose')
+var Habit = require('./habit')
 var user = db.Schema({
   username: { type: String, required: true },
   password: { type: String, required: true, select: false },
@@ -9,7 +11,7 @@ var user = db.Schema({
   city: { type: String, required: true },
   state: { type: String, required: true },
   country: { type: String, required: true },
-  current_habit: { type: String, required: false, default: '' }
+  current_habit: {type: mongoose.Schema.Types.ObjectId, ref: 'Habit', default: null}
 })
 module.exports = db.model('User', user)
 

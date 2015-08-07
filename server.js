@@ -17,6 +17,7 @@ app.use(require('./auth'))
 app.use('/api/admin', require('./controllers/api/admin')) // contains endpoints get,post(/api/posts)
 
 app.use('/api/teams', require('./controllers/api/teams'))
+app.use('/api/forms', require('./controllers/api/forms'))
 
 // == modulearized to controllers/static.js ==
 // app.get('/', function(req, res) {

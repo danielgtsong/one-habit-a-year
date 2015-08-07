@@ -1,8 +1,10 @@
+var User = require('./user')
+var mongoose = require('mongoose')
 var database = require('../database')
 var Habit = database.model('Habit', {
-  user: { type: User, required: true, default: null },
+  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null},
   category: { type: String, required: true },
-  current_habit: { type: String, required: true },
+  description: { type: String, required: true },
   timesperweek: { type: String, required: true },
   date: { type: Date, required: true, default: Date.now }
 })
