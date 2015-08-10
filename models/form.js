@@ -4,11 +4,11 @@ var Week = require('./week')
 var Habit = require('./habit')
 
 var Form = database.model('Form', {
-  user: { type: User, required: true },
+  user: {type: database.Schema.Types.ObjectId, ref: 'User'},
   category: { type: String, required: true },
-  habit: { type: String, required: true },
+  habit: {type: database.Schema.Types.ObjectId, ref: 'Habit'},
   timesperweek: { type: String, required: true },
-  week: { type: Week, required: true },
+  week: {type: database.Schema.Types.ObjectId, ref: 'Week'},
   date: { type: Date, required: true, default: Date.now }
 })
 module.exports = Form
