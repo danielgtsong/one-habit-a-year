@@ -13,6 +13,7 @@ var user = db.Schema({
   country: { type: String, required: true },
   current_habit: {type: db.Schema.Types.ObjectId, ref: 'Habit'}
 }, { strict: false })
+
 user.methods.setCurrentHabit = function (habit) {
   // var greeting = this.name ? "Meow name is " + this.name : "I don't have a name";
   // console.log(greeting);
@@ -26,7 +27,8 @@ user.virtual('setHabit').set(function (habit) {
   this.current_habit = habit
   console.log('user.js current_habit is ' + this.current_habit)
 })
-user.set('toObject', { getters: true });
+user.set('toObject', { getters: true })
+
 module.exports = db.model('User', user)
 
 

@@ -37,13 +37,24 @@ router.post('/', function(req,res,next) {
 router.post('/sethabit', function(req,res,next) {
   var user = req.body.user
   var current_habit = req.body.current_habit
-  console.log('user: ' + JSON.stringify(user))
-  console.log('current habit: ' + JSON.stringify(current_habit))
-  User.update(
-    { _id: user._id },
-    { $set: { current_habit: current_habit } }
-  )
-  console.log('users.js habit is set')
+  console.log('\nuser: ' + JSON.stringify(user))
+  console.log('\ncurrent habit: ' + JSON.stringify(current_habit))
+  // User.update(
+  //   { _id: user._id },
+  //   { $set: { current_habit: current_habit } }
+  // )
+  User.findOne({ _id: user._id }, function(err, found_user) {
+    if (err) { return next(err)}
+    console.log('\nfound_user: ' + found_user);
+    found_user.current_habit = current_habit;
+    console.log('\nfound_user.current_habit: ' + found_user.current_habit);
+    found_user.save(function (err) {
+      if (err) { return next(err) }
+      res.sendStatus(201)
+    })
+    console.log('\nafter saving, found_user: ' + found_user);
+  });
+  console.log('\nusers.js habit is set')
 })
 
 module.exports = router
