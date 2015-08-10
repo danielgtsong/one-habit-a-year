@@ -2,7 +2,7 @@ angular.module('app').service('FormsSvc', function($http) {
 
   this.user = {}
   this.setUser = function(user) {
-  	console.log('[FormsSvc] user set: ' + JSON.stringify(user))
+  	// console.log('[FormsSvc] user set: ' + JSON.stringify(user))
   	this.user = user
   }
   this.getUser = function() {

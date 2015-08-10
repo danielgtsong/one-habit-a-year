@@ -1,1 +1,11 @@
 curl -X POST -d '{"username": "dickeyxxx", "password": "pass"}' -H "Content-Type: application/json" localhost:3000/api/users
+
+db.users.update(
+    { _id : ObjectId("55c8228e7b05978c0caefc3b") },
+    {
+      $set: {
+        current_habit: "yep"
+      },
+      $currentDate: { lastModified: true }
+    }
+)

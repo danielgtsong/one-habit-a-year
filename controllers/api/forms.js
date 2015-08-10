@@ -3,7 +3,7 @@ var router = require('express').Router()
 
 router.get('/current_week', function(req,res,next) {
   console.log('router.get(/api/forms/current_week)')
-  return 
+  return "week1"
 })
 
 // router.post('/', function(req,res,next) {

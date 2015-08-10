@@ -1,33 +1,30 @@
-var Post = require('../../models/post')
+var Habit = require('../../models/habit')
 var router = require('express').Router()
 
-// router.get('/api/posts', function(req,res,next) {
 router.get('/', function(req,res,next) {
-  console.log('router.get(/api/posts)')
-  Post.find()
+  console.log('router.get(/api/habits)')
+  Habit.find()
   .sort('-date')
-  .exec(function(err,posts) {
+  .exec(function(err,habits) {
     if(err) { return next(err) }
-    res.json(posts)
+    res.json(habits)
   })
 })
 
 // The system will start with four categories of habits: Physical, Spiritual, Intellectual or other.
 
-// router.post('/api/posts', function(req,res,next) {
 router.post('/', function(req,res,next) {
-  console.log('router.post(/api/posts)')
-  var post = new Post({
-    username: req.body.username,
+  console.log('router.post(/api/habits)')
+  var habit = new Habit({
+    user: req.body.user,
     category: req.body.category,
-    habit: req.body.habit,
+    description: req.body.description,
     timesperweek: req.body.timesperweek
   })
-  post.save(function (err,post) {
+  habit.save(function (err,habit) {
     if (err) { return next(err) }
-    // res.json(201,post)
-    res.status(201).json(post)
-    console.log('Posted: ' + post)
+    res.status(201).json(habit)
+    console.log('New Habit: ' + habit)
   })
 })
 

@@ -18,6 +18,7 @@ app.use('/api/admin', require('./controllers/api/admin')) // contains endpoints 
 
 app.use('/api/teams', require('./controllers/api/teams'))
 app.use('/api/forms', require('./controllers/api/forms'))
+app.use('/api/habits', require('./controllers/api/habits'))
 
 // == modulearized to controllers/static.js ==
 // app.get('/', function(req, res) {

@@ -24,6 +24,12 @@ angular.module('app').service('UserSvc', function($http) {
     })
     // redirect to login page
   }
+  svc.setHabit = function(user, current_habit) {
+    return $http.post('/api/users/sethabit', {
+      user: user,
+      current_habit: current_habit
+    })
+  }
 })
 
 // User's enter email, password, phone number, GLDI class, city, state, country, photo.

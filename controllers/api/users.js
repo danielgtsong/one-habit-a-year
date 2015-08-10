@@ -34,4 +34,16 @@ router.post('/', function(req,res,next) {
   })
 })
 
+router.post('/sethabit', function(req,res,next) {
+  var user = req.body.user
+  var current_habit = req.body.current_habit
+  console.log('user: ' + JSON.stringify(user))
+  console.log('current habit: ' + JSON.stringify(current_habit))
+  User.update(
+    { _id: user._id },
+    { $set: { current_habit: current_habit } }
+  )
+  console.log('users.js habit is set')
+})
+
 module.exports = router

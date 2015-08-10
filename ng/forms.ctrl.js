@@ -1,4 +1,4 @@
-angular.module('app').controller('FormsCtrl', function($scope, FormsSvc) {
+angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc) {
   
   $scope.user = FormsSvc.getUser()
 
@@ -9,6 +9,25 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc) {
   }
 
   $scope.week = FormsSvc.getCurrentWeek() // set to the current week
+
+  $scope.addHabit = function() {
+      FormsSvc.createHabit({
+        user: $scope.user,
+        category: $scope.category,
+        description: $scope.description,
+        timesperweek: $scope.timesperweek,
+      }).success(function (habit) {
+        $scope.habit = habit
+        $scope.category = habit.category
+        // $scope.user.setCurrentHabit(habit) // doesnt work
+        // $scope.user.set('current_habit', habit) // doesnt work
+
+        // $scope.user.current_habit = habit // doesnt really work
+        // $scope.user.setHabit(habit) // doesnt work
+        // $scope.user.save() // doesnt work
+        UserSvc.setHabit($scope.user, habit)
+      })
+  }
 
   $scope.addForm = function() {
       FormsSvc.createForm({
@@ -22,19 +41,6 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc) {
         $scope.category = null
         $scope.habit = null
         $scope.week = null  
-      })
-  }
-  $scope.addHabit = function() {
-      FormsSvc.createHabit({
-        user: $scope.user.name,
-        category: $scope.category,
-        description: $scope.description,
-        timesperweek: $scope.timesperweek,
-        week: $scope.week      
-      }).success(function (habit) {
-        $scope.habit = habit
-        $scope.category = habit.category
-        $scope.week = habit.week
       })
   }
 })
