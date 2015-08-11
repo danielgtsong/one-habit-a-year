@@ -5,11 +5,16 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
   if(!$scope.user.current_habit) {
     $scope.no_habit = true
   } else {
-    $scope.habit = $scope.user.current_habit // set to the current user's habit
+    // $scope.habit = $scope.user.current_habit // set to the current user's habit
+    FormsSvc.getHabit($scope.user.current_habit)
+    setTimeout(function() {
+      console.log('Times up')
+      $scope.habit = FormsSvc.stored_habit;
+      console.log('\n[forms.ctrl.js] - stored_habit', FormsSvc.stored_habit)
+    }, 5000);
   }
 
   $scope.week = FormsSvc.getCurrentWeek() // set to the current week
-  console.log('forms.ctrl.js - $scope.habit', $scope.habit)
 
   $scope.addHabit = function() {
       FormsSvc.createHabit({
@@ -20,12 +25,6 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
       }).success(function (habit) {
         $scope.habit = habit
         $scope.category = habit.category
-        // $scope.user.setCurrentHabit(habit) // doesnt work
-        // $scope.user.set('current_habit', habit) // doesnt work
-
-        // $scope.user.current_habit = habit // doesnt really work
-        // $scope.user.setHabit(habit) // doesnt work
-        // $scope.user.save() // doesnt work
         UserSvc.setHabit($scope.user, habit)
       })
   }

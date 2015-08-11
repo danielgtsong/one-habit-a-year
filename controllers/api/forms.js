@@ -24,12 +24,12 @@ router.get('/current_week', function(req,res,next) {
   		{ day: 'friday', complete: false },
   		{ day: 'saturday', complete: false }
   	],
-	currentdate: date.getMonth()+'/'+date.getDayOfMonth()+'/'+date.getYear(),
-	dayofyear: date.getDayOfYear(),
-	dayofweek: date.getDayOfWeek(),
-	weekofyear: date.getWeekOfYear(),
-	weeksinyear: date.getWeeksInWeekYear(),
-	year: date.getYear()
+  	currentdate: date.getMonth()+'/'+date.getDayOfMonth()+'/'+date.getYear(),
+  	dayofyear: date.getDayOfYear(),
+  	dayofweek: date.getDayOfWeek(),
+  	weekofyear: date.getWeekOfYear(),
+  	weeksinyear: date.getWeeksInWeekYear(),
+  	year: date.getYear()
   })
   return week
 })

@@ -95,11 +95,16 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
   if(!$scope.user.current_habit) {
     $scope.no_habit = true
   } else {
-    $scope.habit = $scope.user.current_habit // set to the current user's habit
+    // $scope.habit = $scope.user.current_habit // set to the current user's habit
+    FormsSvc.getHabit($scope.user.current_habit)
+    setTimeout(function() {
+      console.log('Times up')
+      $scope.habit = FormsSvc.stored_habit;
+      console.log('\n[forms.ctrl.js] - stored_habit', FormsSvc.stored_habit)
+    }, 5000);
   }
 
   $scope.week = FormsSvc.getCurrentWeek() // set to the current week
-  console.log('forms.ctrl.js - $scope.habit', $scope.habit)
 
   $scope.addHabit = function() {
       FormsSvc.createHabit({
@@ -110,12 +115,6 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
       }).success(function (habit) {
         $scope.habit = habit
         $scope.category = habit.category
-        // $scope.user.setCurrentHabit(habit) // doesnt work
-        // $scope.user.set('current_habit', habit) // doesnt work
-
-        // $scope.user.current_habit = habit // doesnt really work
-        // $scope.user.setHabit(habit) // doesnt work
-        // $scope.user.save() // doesnt work
         UserSvc.setHabit($scope.user, habit)
       })
   }
@@ -136,7 +135,7 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
   }
 })
 angular.module('app').service('FormsSvc', function($http) {
-
+  this.stored_habit = 'blank'
   this.user = {}
   this.setUser = function(user) {
   	// console.log('[FormsSvc] user set: ' + JSON.stringify(user))
@@ -145,14 +144,28 @@ angular.module('app').service('FormsSvc', function($http) {
   this.getUser = function() {
   	return this.user
   }
-  this.createForm = function (post) {
-    return $http.post('/api/forms', post)
+  this.createForm = function (form) {
+    return $http.post('/api/forms', form)
   }
   this.getCurrentWeek = function() {
   	return $http.get('/api/forms/current_week')
   }
   this.createHabit = function(habit) {
   	return $http.post('/api/habits', habit)
+  }
+  this.getHabit = function(habit) {
+    console.log('FormsSvc - getHabit', habit)
+    $http.post('/api/habits/findOne', { _id: habit })
+    .then(function (habit) {
+        console.log('FormsSvc returned habit: ', habit.data)
+        $http.post('/api/habits/stored_habit', { habit: habit.data })
+        this.stored_habit = habit.data
+        console.log('FormsSvc this.stored_habit: ', this.stored_habit)
+    }) 
+  }
+  this.getStoredHabit = function() {
+    console.log('getStoredHabit: ', this.stored_habit)
+    return this.stored_habit
   }
 })
 angular.module('app').controller('LoginCtrl', function($scope, UserSvc) {
