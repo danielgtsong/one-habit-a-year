@@ -5,7 +5,7 @@ var jwt = require('jwt-simple')
 var config = require('../../config')
 
 router.post('/', function(req,res,next) {
-  User.findOne({username: req.body.username})
+  User.findOne({username: req.body.username}) // creates a unique token for the user
   .select('password').select('username')
   .exec(function (err, user) {
     if (err) { return next(err) }

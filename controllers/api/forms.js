@@ -8,12 +8,6 @@ date.setTime(+new Date())
 router.get('/current_week', function(req,res,next) {
   console.log('router.get(/api/forms/current_week)')
 
-  // console.log('forms.js - currentdate: ', date.getMonth()+'/'+date.getDayOfMonth()+'/'+date.getYear());
-  // console.log('forms.js - dayofyear: ', date.getDayOfYear() )
-  // console.log('forms.js - dayofweek: ' + date.getDayOfWeek() );
-  // console.log('forms.js - weekofyear: ' + date.getWeekOfYear() );
-  // console.log('forms.js - weeksinyear: ' + date.getWeeksInWeekYear() )
-
   var week = new Week({
   	checks: [
   		{ day: 'sunday', complete: false },
@@ -33,21 +27,5 @@ router.get('/current_week', function(req,res,next) {
   })
   return week
 })
-
-// router.post('/', function(req,res,next) {
-//   console.log('router.post(/api/posts)')
-//   var post = new Post({
-//     username: req.body.username,
-//     category: req.body.category,
-//     habit: req.body.habit,
-//     timesperweek: req.body.timesperweek
-//   })
-//   post.save(function (err,post) {
-//     if (err) { return next(err) }
-//     // res.json(201,post)
-//     res.status(201).json(post)
-//     console.log('Posted: ' + post)
-//   })
-// })
 
 module.exports = router

@@ -3,11 +3,29 @@ angular.module('app').service('UserSvc', function($http) {
   svc.getUser = function() {
     return $http.get('/api/users')
   }
+
+// ***************************************************************
+  svc.loginWithToken = function (token) {
+    console.log('UserSvc - loginWithToken')
+    var user = svc.getUserWithToken(token)
+    console.log('UserSvc - loginWithToken, user: ', user)
+    return user
+  }
+  svc.getUserWithToken = function(token) {
+    console.log('UserSvc - getUserWithToken')
+    $http.defaults.headers.common['X-Auth'] = token
+    var user = $http.get('/api/users')
+    console.log('UserSvc - getUserWithToken, user: ', user)
+    return user
+  }
+// ***************************************************************
+
   svc.login = function (username, password) {
     return $http.post('/api/sessions', {
       username: username, password: password
     }).then(function (val) {
       svc.token = val.data
+      window.localStorage.token = val.data
       $http.defaults.headers.common['X-Auth'] = val.data
       return svc.getUser()
     })

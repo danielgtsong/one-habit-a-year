@@ -18,23 +18,6 @@ router.get('/', function(req,res,next) {
   })
 })
 
-router.post('/stored_habit', function(req,res,next) {
-  stored_habit = req.body.habit
-})
-
-router.get('/stored_habit', function(req,res,next) {
-  console.log('habits.js - stored_habit: ', stored_habit)
-  return stored_habit
-})
-
-router.post('/findOne', function(req,res,next) {
-  var habit_id = req.body._id;
-  Habit.findOne({_id: habit_id}, function(err, habit) {
-    if (err) { return next(err) }
-    res.json(habit)
-  })
-})
-
 router.post('/', function(req,res,next) {
   console.log('router.post(/api/habits)')
   var habit = new Habit({
@@ -49,5 +32,18 @@ router.post('/', function(req,res,next) {
     console.log('New Habit: ' + habit)
   })
 })
+
+// ******************************************************
+
+router.post('/findOne', function(req,res,next) {
+  var habit_id = req.body._id;
+  Habit.findOne({_id: habit_id}, function(err, habit) {
+    if (err) { return next(err) }
+    res.json(habit)
+    // return habit
+  })
+})
+
+// ******************************************************
 
 module.exports = router

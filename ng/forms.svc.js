@@ -1,5 +1,6 @@
 angular.module('app').service('FormsSvc', function($http) {
-  this.stored_habit = 'blank'
+
+  var self = this;
   this.user = {}
   this.setUser = function(user) {
   	// console.log('[FormsSvc] user set: ' + JSON.stringify(user))
@@ -17,18 +18,21 @@ angular.module('app').service('FormsSvc', function($http) {
   this.createHabit = function(habit) {
   	return $http.post('/api/habits', habit)
   }
-  this.getHabit = function(habit) {
-    console.log('FormsSvc - getHabit', habit)
+
+  self.response_obj = {}
+  self.getHabit = function(habit) {
+    
+    // self.response_obj = {}
     $http.post('/api/habits/findOne', { _id: habit })
-    .then(function (habit) {
+    .then(function (habit, response_obj) {
+        setTimeout(function(){ console.log('hello from getHabit'); }, 3000);
         console.log('FormsSvc returned habit: ', habit.data)
-        $http.post('/api/habits/stored_habit', { habit: habit.data })
-        this.stored_habit = habit.data
-        console.log('FormsSvc this.stored_habit: ', this.stored_habit)
+        self.response_obj.data = habit.data
+        return habit.data
     }) 
-  }
-  this.getStoredHabit = function() {
-    console.log('getStoredHabit: ', this.stored_habit)
-    return this.stored_habit
+    setTimeout(function(){ console.log('response_obj: ', self.response_obj) }, 3000);
+    // console.log('response: ', response.$$state)
+    // console.log('response_obj: ', self.response_obj)
+    return self.response_obj
   }
 })

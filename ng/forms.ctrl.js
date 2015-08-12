@@ -6,12 +6,15 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
     $scope.no_habit = true
   } else {
     // $scope.habit = $scope.user.current_habit // set to the current user's habit
+    // $scope.habit = FormsSvc.getHabit($scope.user.current_habit)
     FormsSvc.getHabit($scope.user.current_habit)
-    setTimeout(function() {
-      console.log('Times up')
-      $scope.habit = FormsSvc.stored_habit;
-      console.log('\n[forms.ctrl.js] - stored_habit', FormsSvc.stored_habit)
-    }, 5000);
+
+    setTimeout(function(){ 
+      $scope.response_obj = FormsSvc.response_obj
+      console.log('hi from forms controller, response_obj: ', $scope.response_obj) 
+      $scope.habit = $scope.response_obj.data
+      console.log('hi from forms controller, $scope.habit: ', $scope.habit) 
+    }, 10000);
   }
 
   $scope.week = FormsSvc.getCurrentWeek() // set to the current week
