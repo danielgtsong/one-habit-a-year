@@ -13,7 +13,9 @@ angular.module('app').service('FormsSvc', function($http) {
     return $http.post('/api/forms', form)
   }
   this.getCurrentWeek = function() {
-  	return $http.get('/api/forms/current_week')
+  	return $http.get('/api/forms/current_week').then(function(response) {
+      return { data: response.data }
+    })
   }
   this.createHabit = function(habit) {
   	return $http.post('/api/habits', habit)
@@ -25,12 +27,12 @@ angular.module('app').service('FormsSvc', function($http) {
     // self.response_obj = {}
     $http.post('/api/habits/findOne', { _id: habit })
     .then(function (habit, response_obj) {
-        setTimeout(function(){ console.log('hello from getHabit'); }, 3000);
-        console.log('FormsSvc returned habit: ', habit.data)
+        // setTimeout(function(){ console.log('hello from getHabit'); }, 3000);
+        // console.log('FormsSvc returned habit: ', habit.data)
         self.response_obj.data = habit.data
         return habit.data
     }) 
-    setTimeout(function(){ console.log('response_obj: ', self.response_obj) }, 3000);
+    // setTimeout(function(){ console.log('response_obj: ', self.response_obj) }, 3000);
     // console.log('response: ', response.$$state)
     // console.log('response_obj: ', self.response_obj)
     return self.response_obj

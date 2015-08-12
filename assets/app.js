@@ -82,7 +82,7 @@ angular.module('app').service('AdminSvc', function($http) {
 })
 angular.module('app').controller('ApplicationCtrl', function($scope, FormsSvc, UserSvc, LoginSvc) {
   if(window.localStorage.token) {
-  	console.log('application ctrl - localStorage.token ', window.localStorage.token)
+  	// console.log('ApplicationCtrl- localStorage.token ', window.localStorage.token)
   	var token = window.localStorage.token
 
   	// var user = UserSvc.getUser(token)
@@ -95,9 +95,10 @@ angular.module('app').controller('ApplicationCtrl', function($scope, FormsSvc, U
     });
   	
   	setTimeout(function() {
-  		console.log('ApplicationCtrl - user ', $scope.user)
-  		console.log('ApplicationCtrl - user_data ', $scope.user_data)
+  		// console.log('ApplicationCtrl - user ', $scope.user)
+  		// console.log('ApplicationCtrl - user_data ', $scope.user_data)
   		$scope.currentUser = $scope.user_data
+  		FormsSvc.setUser($scope.user_data)
   	},50)
   }
 
@@ -121,13 +122,23 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
 
     setTimeout(function(){ 
       $scope.response_obj = FormsSvc.response_obj
-      console.log('hi from forms controller, response_obj: ', $scope.response_obj) 
+      // console.log('hi from forms controller, response_obj: ', $scope.response_obj) 
       $scope.habit = $scope.response_obj.data
-      console.log('hi from forms controller, $scope.habit: ', $scope.habit) 
-    }, 10000);
+      console.log('FormsCtrl  , $scope.habit: ', $scope.habit) 
+    }, 100);
   }
 
-  $scope.week = FormsSvc.getCurrentWeek() // set to the current week
+  FormsSvc.getCurrentWeek().then(function(response) {
+    $scope.week = response.data
+  }) // set to the current week
+  setTimeout(function(){ 
+    // console.log('FormsCtrl, $scope.week: ', $scope.week )
+  }, 300);
+
+  $scope.getCategory = function() {
+    console.log('getCategory ', $scope.habit.category)
+    return $scope.habit.category
+  }
 
   $scope.addHabit = function() {
       FormsSvc.createHabit({
@@ -172,7 +183,9 @@ angular.module('app').service('FormsSvc', function($http) {
     return $http.post('/api/forms', form)
   }
   this.getCurrentWeek = function() {
-  	return $http.get('/api/forms/current_week')
+  	return $http.get('/api/forms/current_week').then(function(response) {
+      return { data: response.data }
+    })
   }
   this.createHabit = function(habit) {
   	return $http.post('/api/habits', habit)
@@ -184,12 +197,12 @@ angular.module('app').service('FormsSvc', function($http) {
     // self.response_obj = {}
     $http.post('/api/habits/findOne', { _id: habit })
     .then(function (habit, response_obj) {
-        setTimeout(function(){ console.log('hello from getHabit'); }, 3000);
-        console.log('FormsSvc returned habit: ', habit.data)
+        // setTimeout(function(){ console.log('hello from getHabit'); }, 3000);
+        // console.log('FormsSvc returned habit: ', habit.data)
         self.response_obj.data = habit.data
         return habit.data
     }) 
-    setTimeout(function(){ console.log('response_obj: ', self.response_obj) }, 3000);
+    // setTimeout(function(){ console.log('response_obj: ', self.response_obj) }, 3000);
     // console.log('response: ', response.$$state)
     // console.log('response_obj: ', self.response_obj)
     return self.response_obj
@@ -222,7 +235,7 @@ angular.module('app').service('LoginSvc', function($http, UserSvc) {
   var loginSvc = this
   loginSvc.user = null;
   loginSvc.loginWithToken = function(token) {
-    console.log('LoginSvc - loginWithToken')
+    // console.log('LoginSvc - loginWithToken')
     return UserSvc.loginWithToken(token)
     .then(function (response) {
       return { data: response.data }
@@ -290,16 +303,16 @@ angular.module('app').service('UserSvc', function($http) {
 
 // ***************************************************************
   svc.loginWithToken = function (token) {
-    console.log('UserSvc - loginWithToken')
+    // console.log('UserSvc - loginWithToken')
     var user = svc.getUserWithToken(token)
-    console.log('UserSvc - loginWithToken, user: ', user)
+    // console.log('UserSvc - loginWithToken, user: ', user)
     return user
   }
   svc.getUserWithToken = function(token) {
-    console.log('UserSvc - getUserWithToken')
+    // console.log('UserSvc - getUserWithToken')
     $http.defaults.headers.common['X-Auth'] = token
     var user = $http.get('/api/users')
-    console.log('UserSvc - getUserWithToken, user: ', user)
+    // console.log('UserSvc - getUserWithToken, user: ', user)
     return user
   }
 // ***************************************************************

@@ -11,13 +11,23 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
 
     setTimeout(function(){ 
       $scope.response_obj = FormsSvc.response_obj
-      console.log('hi from forms controller, response_obj: ', $scope.response_obj) 
+      // console.log('hi from forms controller, response_obj: ', $scope.response_obj) 
       $scope.habit = $scope.response_obj.data
-      console.log('hi from forms controller, $scope.habit: ', $scope.habit) 
-    }, 10000);
+      console.log('FormsCtrl  , $scope.habit: ', $scope.habit) 
+    }, 100);
   }
 
-  $scope.week = FormsSvc.getCurrentWeek() // set to the current week
+  FormsSvc.getCurrentWeek().then(function(response) {
+    $scope.week = response.data
+  }) // set to the current week
+  setTimeout(function(){ 
+    // console.log('FormsCtrl, $scope.week: ', $scope.week )
+  }, 300);
+
+  $scope.getCategory = function() {
+    console.log('getCategory ', $scope.habit.category)
+    return $scope.habit.category
+  }
 
   $scope.addHabit = function() {
       FormsSvc.createHabit({

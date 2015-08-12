@@ -25,7 +25,8 @@ router.get('/current_week', function(req,res,next) {
   	weeksinyear: date.getWeeksInWeekYear(),
   	year: date.getYear()
   })
-  return week
+  console.log('forms.js - week: ', week)
+  res.json(week)
 })
 
 module.exports = router

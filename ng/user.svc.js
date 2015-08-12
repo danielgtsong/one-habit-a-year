@@ -6,16 +6,16 @@ angular.module('app').service('UserSvc', function($http) {
 
 // ***************************************************************
   svc.loginWithToken = function (token) {
-    console.log('UserSvc - loginWithToken')
+    // console.log('UserSvc - loginWithToken')
     var user = svc.getUserWithToken(token)
-    console.log('UserSvc - loginWithToken, user: ', user)
+    // console.log('UserSvc - loginWithToken, user: ', user)
     return user
   }
   svc.getUserWithToken = function(token) {
-    console.log('UserSvc - getUserWithToken')
+    // console.log('UserSvc - getUserWithToken')
     $http.defaults.headers.common['X-Auth'] = token
     var user = $http.get('/api/users')
-    console.log('UserSvc - getUserWithToken, user: ', user)
+    // console.log('UserSvc - getUserWithToken, user: ', user)
     return user
   }
 // ***************************************************************

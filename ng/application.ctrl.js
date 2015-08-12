@@ -1,6 +1,6 @@
 angular.module('app').controller('ApplicationCtrl', function($scope, FormsSvc, UserSvc, LoginSvc) {
   if(window.localStorage.token) {
-  	console.log('application ctrl - localStorage.token ', window.localStorage.token)
+  	// console.log('ApplicationCtrl- localStorage.token ', window.localStorage.token)
   	var token = window.localStorage.token
 
   	// var user = UserSvc.getUser(token)
@@ -13,9 +13,10 @@ angular.module('app').controller('ApplicationCtrl', function($scope, FormsSvc, U
     });
   	
   	setTimeout(function() {
-  		console.log('ApplicationCtrl - user ', $scope.user)
-  		console.log('ApplicationCtrl - user_data ', $scope.user_data)
+  		// console.log('ApplicationCtrl - user ', $scope.user)
+  		// console.log('ApplicationCtrl - user_data ', $scope.user_data)
   		$scope.currentUser = $scope.user_data
+  		FormsSvc.setUser($scope.user_data)
   	},50)
   }
 
