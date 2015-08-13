@@ -1,6 +1,8 @@
 var db = require('../database')
 var mongoose = require('mongoose')
 var Habit = require('./habit')
+var Week = require('./week')
+var Form = require('./form')
 var user = db.Schema({
   username: { type: String, required: true },
   password: { type: String, required: true, select: false },
@@ -11,7 +13,9 @@ var user = db.Schema({
   city: { type: String, required: true },
   state: { type: String, required: true },
   country: { type: String, required: true },
-  current_habit: {type: db.Schema.Types.ObjectId, ref: 'Habit'}
+  current_habit: {type: db.Schema.Types.ObjectId, ref: 'Habit'},
+  current_week: {type: db.Schema.Types.ObjectId, ref: 'Week'},
+  current_form: {type: db.Schema.Types.ObjectId, ref: 'Form'}
 }, { strict: false })
 
 user.methods.setCurrentHabit = function (habit) {

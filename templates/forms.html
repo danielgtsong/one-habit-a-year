@@ -30,52 +30,20 @@
       <div class='form-group'>
         <div class='input-group'>
           <li>Name: {{ user.name }} </li>
-          <li>Category: {{ habit }} </li>
-          <li>Habit: {{ getDescription }} </li>
-          <li>TimesPerWeek: {{ getTimes }} </li>
+          <li>Category: {{ habit.category }} </li>
+          <li>Description: {{ habit.description }} </li>
+          <li>TimesPerWeek: {{ habit.timesperweek }} </li>
+           <li>Week: {{ current_week }} </li>
 
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Sunday
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Monday
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Tuesday
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Wednesday
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Thursday
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Friday
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Saturday
-            </label>
-          </div>
+          <li ng-repeat="day in current_week_of_user.checks" class='list-group-item'>
+            <div class="checkbox ng-class: applyDisabledAttribute(class_obj);" >
+              <label>
+                <input type="checkbox" value="" ng-model="disabled">
+                {{ day.day }}
+              </label>
+            </div>
+          </li>
+
           <span class='input-group-btn'>
             <button ng-click='addForm()' class='btn btn-default post-btn'>Add Form</button>
           </span>

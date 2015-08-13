@@ -1,19 +1,9 @@
 var router = require('express').Router()
 var bcrypt = require('bcrypt')
 var jwt = require('jwt-simple')
+var jwt_persist = require('jsonwebtoken'); // used to create, sign and verify tokens
 var User = require('../../models/user')
 var config = require('../../config')
-
-router.get('/', function(req,res,next) {
-  if (!req.headers['x-auth']) {
-    return res.sendStatus(401)
-  }
-  var auth = jwt.decode(req.headers['x-auth'], config.secret)
-  User.findOne({username: auth.username}, function(err, user) {
-    if (err) { return next(err) }
-    res.json(user)
-  })
-})
 
 router.post('/', function(req,res,next) {
   var user = new User({
@@ -34,27 +24,55 @@ router.post('/', function(req,res,next) {
   })
 })
 
-router.post('/sethabit', function(req,res,next) {
+router.post('/setweek', function(req,res,next) {
   var user = req.body.user
-  var current_habit = req.body.current_habit
-  // console.log('\nuser: ' + JSON.stringify(user))
-  // console.log('\ncurrent habit: ' + JSON.stringify(current_habit))
-  // User.update(
-  //   { _id: user._id },
-  //   { $set: { current_habit: current_habit } }
-  // )
+  var current_week = req.body.current_week
   User.findOne({ _id: user._id }, function(err, found_user) {
     if (err) { return next(err)}
-    // console.log('\nfound_user: ' + found_user);
-    found_user.current_habit = current_habit;
-    // console.log('\nfound_user.current_habit: ' + found_user.current_habit);
+    found_user.current_week = current_week;
     found_user.save(function (err) {
       if (err) { return next(err) }
       res.sendStatus(201)
     })
-    // console.log('\nafter saving, found_user: ' + found_user);
   });
-  // console.log('\nusers.js habit is set')
+})
+
+router.post('/setform', function(req,res,next) {
+  var user = req.body.user
+  var current_form = req.body.current_form
+  User.findOne({ _id: user._id }, function(err, found_user) {
+    if (err) { return next(err)}
+    found_user.current_form = current_form;
+    found_user.save(function (err) {
+      if (err) { return next(err) }
+      res.sendStatus(201)
+    })
+  });
+})
+
+router.post('/sethabit', function(req,res,next) {
+  var user = req.body.user
+  var current_habit = req.body.current_habit
+  User.findOne({ _id: user._id }, function(err, found_user) {
+    if (err) { return next(err)}
+    found_user.current_habit = current_habit;
+    found_user.save(function (err) {
+      if (err) { return next(err) }
+      res.sendStatus(201)
+    })
+  });
+})
+
+router.get('/', function(req,res,next) {
+  if (!req.headers['x-auth']) {
+    console.log('Users, GET, ERROR')
+    return res.sendStatus(401)
+  }
+  var auth = jwt.decode(req.headers['x-auth'], config.secret)
+  User.findOne({username: auth.username}, function(err, user) {
+    if (err) { return next(err) }
+    res.json(user)
+  })
 })
 
 module.exports = router

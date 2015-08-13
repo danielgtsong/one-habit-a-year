@@ -9,3 +9,12 @@ db.users.update(
       $currentDate: { lastModified: true }
     }
 )
+
+db.users.update(
+	 { _id: ObjectId("55c933f3defcdd037f43f7ab") },
+	 { $set: 
+	   {
+	     current_week: null
+	   }
+	}
+)

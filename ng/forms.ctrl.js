@@ -1,32 +1,63 @@
-angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc) {
+angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc, WeeksSvc) {
   
+  FormsSvc.getCurrentWeek().then(function(response) {
+    $scope.current_week = response.data
+    // console.log('FormsCtrl, $scope.current_week: ', $scope.current_week )
+  })
+
   $scope.user = FormsSvc.getUser()
+  // console.log('FormsCtrl, $scope.user, ', $scope.user)
 
   if(!$scope.user.current_habit) {
     $scope.no_habit = true
   } else {
-    // $scope.habit = $scope.user.current_habit // set to the current user's habit
-    // $scope.habit = FormsSvc.getHabit($scope.user.current_habit)
-    FormsSvc.getHabit($scope.user.current_habit)
-
-    setTimeout(function(){ 
-      $scope.response_obj = FormsSvc.response_obj
-      // console.log('hi from forms controller, response_obj: ', $scope.response_obj) 
-      $scope.habit = $scope.response_obj.data
-      console.log('FormsCtrl  , $scope.habit: ', $scope.habit) 
-    }, 100);
+    var habit_id = $scope.user.current_habit
+    FormsSvc.getHabit(habit_id).then(function(response) {
+      $scope.habit = response.data
+      // console.log('FormsCtrl, $scope.habit: ', $scope.habit )
+    })
   }
 
-  FormsSvc.getCurrentWeek().then(function(response) {
-    $scope.week = response.data
-  }) // set to the current week
-  setTimeout(function(){ 
-    // console.log('FormsCtrl, $scope.week: ', $scope.week )
-  }, 300);
+  if(!$scope.user.current_week || $scope.user.current_week < $scope.current_week){
+    setTimeout(function() {
+      console.log('users has no current week')
+      UserSvc.setWeek($scope.user, $scope.current_week)
+    }, 500)
+  } else { // week is up to date
+      console.log('user week is up to date')
+      var week_id = $scope.user.current_week
+      WeeksSvc.getWeek(week_id).then(function(response) {
+        $scope.current_week_of_user = response.data
+        console.log('current_week_of_user ==> , ', $scope.current_week_of_user)
+      })
+  }
 
-  $scope.getCategory = function() {
-    console.log('getCategory ', $scope.habit.category)
-    return $scope.habit.category
+  $scope.disabled = 'disabled'
+  $scope.class_obj = {
+    disabled: true
+  }
+  $scope.applyDisabledAttribute = function(class_obj) {
+    if (class_obj.disabled == true) {
+        return "disabled";
+    } else {
+        return ""
+    }
+  }
+
+  $scope.addForm = function() {
+      FormsSvc.createForm({
+        user: $scope.user,
+        category: $scope.habit.category,
+        habit: $scope.habit,
+        timesperweek: $scope.habit.timesperweek,
+        week: $scope.current_week_of_user      
+      }).success(function (form) {
+        UserSvc.setForm($scope.user, form)
+        // $scope.user = null
+        // $scope.category = null
+        // $scope.habit = null
+        // $scope.current_week = null 
+      })
   }
 
   $scope.addHabit = function() {
@@ -39,21 +70,6 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
         $scope.habit = habit
         $scope.category = habit.category
         UserSvc.setHabit($scope.user, habit)
-      })
-  }
-
-  $scope.addForm = function() {
-      FormsSvc.createForm({
-        user: $scope.user,
-        category: $scope.habit.category,
-        habit: $scope.habit,
-        timesperweek: $scope.habit.timesperweek,
-        week: $scope.week      
-      }).success(function (form) {
-        $scope.user = null
-        $scope.category = null
-        $scope.habit = null
-        $scope.week = null  
       })
   }
 })
