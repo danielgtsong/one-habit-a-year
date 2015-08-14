@@ -6,13 +6,15 @@ angular.module('app').service('UserSvc', function($http) {
   //   return $http.post('/api/weeks', current_week)
   // }
 
-  svc.setWeek = function(user, current_week) {
-    console.log('UserSvc - current_week, ', current_week)
-    $http.post('/api/weeks', current_week).then(function(response) {
-      console.log('UserSvc - setWeek response.data, ', response.data)
-      $http.post('/api/users/setweek', {
+  svc.setNewWeek = function(user, current_week) {
+    // console.log('UserSvc - current_week, ', current_week)
+    return $http.post('/api/weeks', current_week).then(function(response) {
+      // console.log('UserSvc - setWeek response.data, ', response.data)
+      return $http.post('/api/users/setweek', {
         user: user,
         current_week: response.data
+      }).then(function(response) {
+        return { data: response.data }
       })
     })
   }

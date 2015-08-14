@@ -1,15 +1,32 @@
 var Week = require('../../models/week')
 var router = require('express').Router()
 
-// router.get('/', function(req,res,next) {
-//   console.log('router.get(/api/weeks)')
-//   Week.find()
-//   .sort('-date')
-//   .exec(function(err,weeks) {
-//     if(err) { return next(err) }
-//     res.json(weeks)
-//   })
+// router.post('/update', function(req,res,next) {
+//   console.log('router.post(/api/forms/update)')
+//   var form = req.body.form
+//   var week = req.body.week
+//   Form.findOne({ _id: form._id }, function(err, found_form) {
+//     if (err) { return next(err)}
+//     found_form.week = week;
+//     found_form.save(function (err) {
+//       if (err) { return next(err) }
+//       res.sendStatus(201)
+//     })
+//   });
 // })
+
+router.post('/update', function(req,res,next) {
+  console.log('router.post(/api/weeks/update)')
+  var week = req.body.week
+  Week.findOne({ _id: week._id }, function(err, found_week) {
+    if (err) { return next(err)}
+    found_week.checks = week.checks;
+    found_week.save(function (err) {
+      if (err) { return next(err) }
+      res.json(found_week)
+    })
+  });
+})
 
 router.post('/', function(req,res,next) {
   console.log('router.post(/api/weeks)', req.body)

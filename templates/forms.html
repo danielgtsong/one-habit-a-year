@@ -1,7 +1,7 @@
 <div ng-controller='FormsCtrl' class='container'>
     <h1>Form</h1>
 
-  <div ng-show='no_habit'>
+  <div ng-show='!USER_HAS_CURRENT_HABIT'>
     <h3>Set Habit</h3>
     <form role='form'>
       <div class='form-group'>
@@ -33,19 +33,68 @@
           <li>Category: {{ habit.category }} </li>
           <li>Description: {{ habit.description }} </li>
           <li>TimesPerWeek: {{ habit.timesperweek }} </li>
-           <li>Week: {{ current_week }} </li>
+           <li>Week: {{ current_week_of_user.checks }} </li>
 
-          <li ng-repeat="day in current_week_of_user.checks" class='list-group-item'>
-            <div class="checkbox ng-class: applyDisabledAttribute(class_obj);" >
-              <label>
-                <input type="checkbox" value="" ng-model="disabled">
-                {{ day.day }}
-              </label>
-            </div>
-          </li>
+           <!-- SUNDAY --> 
+          <div class="checkbox " >
+            <div style='margin-top: 20px; margin-bottom:10px;'>{{ current_week_of_user.checks[0].day }}</div>
+            <label> <!-- ng-class: applyDisabled(day.complete); -->
+              <span ng-click='switchDayComplete(0)' ng-show='DAYS.sunday_complete'><button type="button" class="btn btn-success">Complete</button></span>
+              <span ng-click='switchDayComplete(0)' ng-show='!DAYS.sunday_complete'><button type="button" class="btn btn-warning">Incomplete</button></span>
+            </label>
+          </div>
+           <!-- MONDAY -->
+          <div class="checkbox " >
+            <div style='margin-top: 20px;'>{{ current_week_of_user.checks[1].day }}</div>
+            <label> 
+              <span ng-click='switchDayComplete(1)' ng-show='DAYS.monday_complete'><button type="button" class="btn btn-success">Complete</button></span>
+              <span ng-click='switchDayComplete(1)' ng-show='!DAYS.monday_complete'><button type="button" class="btn btn-warning">Incomplete</button></span>
+            </label>
+          </div>
+          <!-- TUESDAY -->
+          <div class="checkbox " >
+            <div style='margin-top: 20px;'>{{ current_week_of_user.checks[2].day }}</div>
+            <label> 
+              <span ng-click='switchDayComplete(2)' ng-show='DAYS.tuesday_complete'><button type="button" class="btn btn-success">Complete</button></span>
+              <span ng-click='switchDayComplete(2)' ng-show='!DAYS.tuesday_complete'><button type="button" class="btn btn-warning">Incomplete</button></span>
+            </label>
+          </div>
+          <!-- WEDNESDAY -->
+          <div class="checkbox " >
+            <div style='margin-top: 20px;'>{{ current_week_of_user.checks[3].day }}</div>
+            <label> 
+              <span ng-click='switchDayComplete(3)' ng-show='DAYS.wednesday_complete'><button type="button" class="btn btn-success">Complete</button></span>
+              <span ng-click='switchDayComplete(3)' ng-show='!DAYS.wednesday_complete'><button type="button" class="btn btn-warning">Incomplete</button></span>
+            </label>
+          </div>
+          <!-- THURSDAY -->
+          <div class="checkbox " >
+            <div style='margin-top: 20px;'>{{ current_week_of_user.checks[4].day }}</div>
+            <label> 
+              <span ng-click='switchDayComplete(4)' ng-show='DAYS.thursday_complete'><button type="button" class="btn btn-success">Complete</button></span>
+              <span ng-click='switchDayComplete(4)' ng-show='!DAYS.thursday_complete'><button type="button" class="btn btn-warning">Incomplete</button></span>
+            </label>
+          </div>
+          <!-- FRIDAY -->
+          <div class="checkbox " >
+            <div style='margin-top: 20px;'>{{ current_week_of_user.checks[5].day }}</div>
+            <label> 
+              <span ng-click='switchDayComplete(5)' ng-show='DAYS.friday_complete'><button type="button" class="btn btn-success">Complete</button></span>
+              <span ng-click='switchDayComplete(5)' ng-show='!DAYS.friday_complete'><button type="button" class="btn btn-warning">Incomplete</button></span>
+            </label>
+          </div>
+          <!-- SATURDAY -->
+          <div class="checkbox " >
+            <div style='margin-top: 20px;'>{{ current_week_of_user.checks[6].day }}</div>
+            <label> 
+              <span ng-click='switchDayComplete(6)' ng-show='DAYS.saturday_complete'><button type="button" class="btn btn-success">Complete</button></span>
+              <span ng-click='switchDayComplete(6)' ng-show='!DAYS.saturday_complete'><button type="button" class="btn btn-warning">Incomplete</button></span>
+            </label>
+          </div>
 
           <span class='input-group-btn'>
-            <button ng-click='addForm()' class='btn btn-default post-btn'>Add Form</button>
+            <button ng-if="!user.current_form" ng-click='addForm()' class='btn btn-default post-btn'>Add Form</button>
+            <button ng-if="user.current_form" ng-click='updateForm()' class='btn btn-default post-btn'>Update Form</button>
           </span>
         </div>
       </div>

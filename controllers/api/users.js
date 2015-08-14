@@ -32,7 +32,7 @@ router.post('/setweek', function(req,res,next) {
     found_user.current_week = current_week;
     found_user.save(function (err) {
       if (err) { return next(err) }
-      res.sendStatus(201)
+      res.json(current_week)
     })
   });
 })

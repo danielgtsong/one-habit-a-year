@@ -6,6 +6,15 @@ var GregorianCalendar = require('gregorian-calendar')
 var date = new GregorianCalendar(require('gregorian-calendar/lib/locale/en-us'))
 date.setTime(+new Date())
 
+router.post('/findOne', function(req,res,next) {
+  console.log('router.post(/api/forms/findOne)')
+  var form_id = req.body.form_id
+  Form.findOne({ _id: form_id }, function(err, form) {
+    if (err) { return next(err)}
+    res.json(form)
+  });
+})
+
 router.get('/current_week', function(req,res,next) {
   console.log('router.get(/api/forms/current_week)')
 
