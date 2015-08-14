@@ -1,15 +1,8 @@
 angular.module('app').service('UserSvc', function($http) {
   var svc = this
 
-  // svc.setWeekTest = function(current_week) {
-  //   console.log('UserSvc - setWeekTest current_week: ', current_week)
-  //   return $http.post('/api/weeks', current_week)
-  // }
-
   svc.setNewWeek = function(user, current_week) {
-    // console.log('UserSvc - current_week, ', current_week)
     return $http.post('/api/weeks', current_week).then(function(response) {
-      // console.log('UserSvc - setWeek response.data, ', response.data)
       return $http.post('/api/users/setweek', {
         user: user,
         current_week: response.data
@@ -24,28 +17,13 @@ angular.module('app').service('UserSvc', function($http) {
       current_form: current_form
     })
   }
-// ***************************************************************
-  // svc.loginWithToken = function (token) {
-  //   console.log('UserSvc - loginWithToken....')
-  //   var user = svc.getUserWithToken(token).then(function(response) {
-  //     console.log('UserSvc - loginWithToken, response: ', response.data)
-  //     return { data: response.data }
-  //   })
-  //   // console.log('UserSvc - loginWithToken, user: ', user)
-  //   return user
-  // }
   svc.getUserWithToken = function(token) {
-    // console.log('UserSvc - getUserWithToken....')
     $http.defaults.headers.common['X-Auth'] = token
-    // console.log('UserSvc - getUserWithToken headers', $http.defaults.headers.common)
     var user = $http.get('/api/users').then(function(response) {
-       // console.log('UserSvc - getUserWithToken, response: ', response.data)
        return { data: response.data }
     })
-    // console.log('UserSvc - getUserWithToken, user: ', user)
     return user
   }
-// ***************************************************************
   svc.getUser = function() {
     return $http.get('/api/users')
   }
@@ -78,5 +56,3 @@ angular.module('app').service('UserSvc', function($http) {
     })
   }
 })
-
-// User's enter email, password, phone number, GLDI class, city, state, country, photo.

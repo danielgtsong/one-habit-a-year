@@ -29,12 +29,13 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
     var week_id = $scope.user.current_week
     WeeksSvc.getWeek(week_id).then(function(response) {
       if($scope.CURRENT_WEEK_LOADED) {
-        console.log('NO SET TIMEOUT')
+        // console.log('NO SET TIMEOUT')
         $scope.current_week_of_user = response.data
         $scope.CURRENT_WEEK_OF_USER_LOADED = true
         $scope.instantiateDays();
-        console.log('user week of year ', $scope.current_week_of_user.weekofyear)
-        console.log('generated week of year ', $scope.current_week.weekofyear)
+        $scope.calculateSuccessRate();
+        // console.log('user week of year ', $scope.current_week_of_user.weekofyear)
+        // console.log('generated week of year ', $scope.current_week.weekofyear)
         if($scope.current_week_of_user.weekofyear < $scope.current_week.weekofyear) {
           $scope.USER_WEEK_UP_TO_DATE = false;
           $scope.USER_FORM_UP_TO_DATE = false;
@@ -45,12 +46,13 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
       }
       else if(!$scope.CURRENT_WEEK_LOADED) {
         setTimeout(function() {
-            console.log('SET TIMEOUT')
+            // console.log('SET TIMEOUT')
             $scope.current_week_of_user = response.data
             $scope.CURRENT_WEEK_OF_USER_LOADED = true
             $scope.instantiateDays();
-            console.log('user week of year ', $scope.current_week_of_user.weekofyear)
-            console.log('generated week of year ', $scope.current_week.weekofyear)
+            $scope.calculateSuccessRate();
+            // console.log('user week of year ', $scope.current_week_of_user.weekofyear)
+            // console.log('generated week of year ', $scope.current_week.weekofyear)
             if($scope.current_week_of_user.weekofyear < $scope.current_week.weekofyear) {
               $scope.USER_WEEK_UP_TO_DATE = false;
               $scope.USER_FORM_UP_TO_DATE = false;
@@ -69,18 +71,20 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
 
   $scope.setNewUserWeek = function() {
     if($scope.USER_WEEK_UP_TO_DATE) { // week is up to date
-      console.log('user week is UP TO DATE')
+      // console.log('user week is UP TO DATE')
     } else {
       if(!$scope.USER_HAS_CURRENT_WEEK) {
-        console.log('user has no current week attribute')
+        // console.log('user has no current week attribute')
       }
-      console.log('USER_WEEK_UP_TO_DATE: ', $scope.USER_WEEK_UP_TO_DATE)
-      console.log('user week is OUT OF DATE')
+      // console.log('USER_WEEK_UP_TO_DATE: ', $scope.USER_WEEK_UP_TO_DATE)
+      // console.log('user week is OUT OF DATE')
       setTimeout(function() {
         UserSvc.setNewWeek($scope.user, $scope.current_week).then(function(response) {
           $scope.current_week_of_user = response.data
-          console.log('*******current_week_of_user, ', $scope.current_week_of_user)
+          // console.log('*******current_week_of_user, ', $scope.current_week_of_user)
           $scope.CURRENT_WEEK_OF_USER_LOADED = true
+          $scope.instantiateDays();
+          $scope.calculateSuccessRate();
         })
       }, 500)
     }
@@ -88,18 +92,18 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
 
   $scope.setCurrentFormOfUser = function() {
     if($scope.USER_FORM_UP_TO_DATE) {
-      console.log('user form is UP TO DATE')
+      // console.log('user form is UP TO DATE')
       var form_id = $scope.user.current_form
       FormsSvc.getUserForm(form_id).then(function(response) {
         $scope.current_form_of_user = response.data
-        console.log('current_form_of_user ==> , ', response.data)
+        // console.log('current_form_of_user ==> , ', response.data)
       })
     } else {
         if(!$scope.USER_HAS_CURRENT_FORM) {
-          console.log('user has no current FORM attribute')
+          // console.log('user has no current FORM attribute')
         }
-        console.log('USER_FORM_UP_TO_DATE: ', $scope.USER_FORM_UP_TO_DATE)
-        console.log('user form is OUT OF DATE')
+        // console.log('USER_FORM_UP_TO_DATE: ', $scope.USER_FORM_UP_TO_DATE)
+        // console.log('user form is OUT OF DATE')
         $scope.current_form_of_user = null
     } 
   }
@@ -151,14 +155,20 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
     }
   }
 
-  $scope.myVar = 'checked'
-  $scope.applyDisabled = function(complete_day) {
-    if (complete_day) {
-        return "disabled";
-    } else {
-        return ""
+  $scope.calculateSuccessRate = function() {
+    var points = 0;
+    var checks = $scope.current_week_of_user.checks;
+    var total = $scope.habit.timesperweek;
+
+    for(var day_index = 0; day_index < checks.length; day_index++) {
+      if(checks[day_index].complete){
+        points++;
+      }
     }
+    $scope.SUCCESS_RATE = points/total
+    return $scope.SUCCESS_RATE
   }
+   
 
   $scope.updateForm = function() {
       FormsSvc.updateWeekOfForm({

@@ -1,4 +1,4 @@
-<div ng-controller='PostsCtrl' class='container'>
+<div ng-controller='HabitsCtrl' class='container'>
     <h1>habit</h1>
     <form role='form'>
       <div class='form-group'>
@@ -11,21 +11,21 @@
             <option>Intellectual</option>
             <option>Other</option>
           </select>
-          <input ng-model='habit' class='form-control' placeholder='habit' id='habit' />
+          <input ng-model='description' class='form-control' placeholder='habit description' id='habit' />
           <input ng-model='timesperweek' class='form-control' placeholder='timesperweek' id='timesperweek' />
 
           <span class='input-group-btn'>
-            <button ng-click='addPost()' class='btn btn-default post-btn'>Add Post</button>
+            <button ng-click='addHabit()' class='btn btn-default post-btn'>Add Habit</button>
           </span>
         </div>
       </div>
     </form>
     <ul class='list-group'>
-      <li ng-repeat="post in posts" class='list-group-item'>
-        <strong>{{ post.username }}</strong>
-        <span>{{ post.category }}</span>
-        <span>{{ post.habit }}</span>
-        <span>{{ post.timesperweek }}</span>
+      <li ng-repeat="habit in habits" class='list-group-item'>
+        <strong>{{ user }}</strong>
+        <span>{{ habit.category }}</span>
+        <span>{{ habit.description }}</span>
+        <span>{{ habit.timesperweek }}</span>
       </li>
     </ul>
 </div>

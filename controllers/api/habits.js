@@ -6,11 +6,20 @@ var config = require('../../config')
 var Habit = require('../../models/habit')
 var router = require('express').Router()
 
-var stored_habit = null;
-
 router.get('/', function(req,res,next) {
   console.log('router.get(/api/habits)')
   Habit.find()
+  .sort('-date')
+  .exec(function(err,habits) {
+    if(err) { return next(err) }
+    res.json(habits)
+  })
+})
+
+router.post('/user_habits', function(req,res,next) {
+  console.log('router.get(/api/habits/user_habits)')
+  var user = req.body.user
+  Habit.find({ user: user._id })
   .sort('-date')
   .exec(function(err,habits) {
     if(err) { return next(err) }

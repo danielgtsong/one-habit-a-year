@@ -9,7 +9,7 @@ app.use(bodyParser.json())
 // =================================================
 
 app.use(require('./controllers/static')) // equivalent to: app.use('/', require('./controllers/static'))
-app.use('/api/posts', require('./controllers/api/posts')) // contains endpoints get,post(/api/posts)
+app.use('/api/habits', require('./controllers/api/habits')) // contains endpoints get,post(/api/posts)
 app.use('/api/sessions', require('./controllers/api/sessions'))
 app.use('/api/users', require('./controllers/api/users'))
 app.use(require('./auth'))

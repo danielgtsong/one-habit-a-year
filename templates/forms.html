@@ -1,5 +1,6 @@
 <div ng-controller='FormsCtrl' class='container'>
-    <h1>Form</h1>
+  <h1>Form</h1>
+  <h2>Current Success Rate : {{ SUCCESS_RATE*100 }}%</h2>
 
   <div ng-show='!USER_HAS_CURRENT_HABIT'>
     <h3>Set Habit</h3>
@@ -100,9 +101,3 @@
       </div>
     </form>
 </div>
-
-<!-- 
-A form allowing user to check off completion of each of their habits for each day in a week. 
-Form is displayed one week at a time. 
-Form includes weekly goal and current success rate.
- -->

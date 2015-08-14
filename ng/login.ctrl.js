@@ -5,11 +5,9 @@ angular.module('app').controller('LoginCtrl', function($scope, UserSvc) {
       $scope.$emit('login', response.data)
     })
   }
-
   $scope.emitLogin = function(response) {
   	$scope.$emit('login', response.data)
   }
-
   $scope.loginWithToken = function(token) {
   	console.log('LoginCtrl - loginWithToken')
     UserSvc.loginWithToken(token)

@@ -80,24 +80,41 @@ angular.module('app').service('AdminSvc', function($http) {
   }
 
 })
-angular.module('app').controller('ApplicationCtrl', function($scope, FormsSvc, UserSvc, LoginSvc) {
+angular.module('app').controller('ApplicationCtrl', function($scope, FormsSvc, UserSvc, LoginSvc, ApplicationSvc) {
+
+    $scope.KEEP_ME_LOGGED_IN = false
+    console.log('IM LOGGING OUT')
+    window.localStorage.token = null
+    ApplicationSvc.removeTokenFromHeaders();
+    $scope.currentUser = null
+    console.log('LOGOUT token')
+    console.log('LOGOUT USER')
+
   if(window.localStorage.token) {
-  	// console.log('ApplicationCtrl- localStorage.token ', window.localStorage.token)
-  	var token = window.localStorage.token
-  	var user = UserSvc.getUserWithToken(token)
+    console.log('ApplicationCtrl- logging in with token')
+    console.log('ApplicationCtrl- localStorage.token ', window.localStorage.token)
+    var token = window.localStorage.token
+    var user = UserSvc.getUserWithToken(token)
     .then(function(response) {
-      // console.log('[application.ctrl.js] response: ', response.data)
-      $scope.$emit('login', response.data)
+        console.log('[application.ctrl.js] user: ', response.data)
+        $scope.$emit('login', response.data)
     });
   }
 
   $scope.$on('login', function(_, user) {
-  	// console.log('[application.ctrl.js] currentUser set')
     $scope.currentUser = user
     FormsSvc.setUser(user)
   })
+
 })
 
+angular.module('app').service('ApplicationSvc', function($http) {
+  this.removeTokenFromHeaders = function() {
+    console.log('ApplicationSvc removeTokenFromHeaders')
+    $http.defaults.headers.common['X-Auth'] = null
+    console.log('ApplicationSvc remove headers: ', $http.defaults.headers.common['X-Auth'])
+  }
+})
 angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc, WeeksSvc) {
     
   $scope.user = FormsSvc.getUser() // RETRIEVE THE USER
@@ -129,12 +146,13 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
     var week_id = $scope.user.current_week
     WeeksSvc.getWeek(week_id).then(function(response) {
       if($scope.CURRENT_WEEK_LOADED) {
-        console.log('NO SET TIMEOUT')
+        // console.log('NO SET TIMEOUT')
         $scope.current_week_of_user = response.data
         $scope.CURRENT_WEEK_OF_USER_LOADED = true
         $scope.instantiateDays();
-        console.log('user week of year ', $scope.current_week_of_user.weekofyear)
-        console.log('generated week of year ', $scope.current_week.weekofyear)
+        $scope.calculateSuccessRate();
+        // console.log('user week of year ', $scope.current_week_of_user.weekofyear)
+        // console.log('generated week of year ', $scope.current_week.weekofyear)
         if($scope.current_week_of_user.weekofyear < $scope.current_week.weekofyear) {
           $scope.USER_WEEK_UP_TO_DATE = false;
           $scope.USER_FORM_UP_TO_DATE = false;
@@ -145,12 +163,13 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
       }
       else if(!$scope.CURRENT_WEEK_LOADED) {
         setTimeout(function() {
-            console.log('SET TIMEOUT')
+            // console.log('SET TIMEOUT')
             $scope.current_week_of_user = response.data
             $scope.CURRENT_WEEK_OF_USER_LOADED = true
             $scope.instantiateDays();
-            console.log('user week of year ', $scope.current_week_of_user.weekofyear)
-            console.log('generated week of year ', $scope.current_week.weekofyear)
+            $scope.calculateSuccessRate();
+            // console.log('user week of year ', $scope.current_week_of_user.weekofyear)
+            // console.log('generated week of year ', $scope.current_week.weekofyear)
             if($scope.current_week_of_user.weekofyear < $scope.current_week.weekofyear) {
               $scope.USER_WEEK_UP_TO_DATE = false;
               $scope.USER_FORM_UP_TO_DATE = false;
@@ -169,18 +188,20 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
 
   $scope.setNewUserWeek = function() {
     if($scope.USER_WEEK_UP_TO_DATE) { // week is up to date
-      console.log('user week is UP TO DATE')
+      // console.log('user week is UP TO DATE')
     } else {
       if(!$scope.USER_HAS_CURRENT_WEEK) {
-        console.log('user has no current week attribute')
+        // console.log('user has no current week attribute')
       }
-      console.log('USER_WEEK_UP_TO_DATE: ', $scope.USER_WEEK_UP_TO_DATE)
-      console.log('user week is OUT OF DATE')
+      // console.log('USER_WEEK_UP_TO_DATE: ', $scope.USER_WEEK_UP_TO_DATE)
+      // console.log('user week is OUT OF DATE')
       setTimeout(function() {
         UserSvc.setNewWeek($scope.user, $scope.current_week).then(function(response) {
           $scope.current_week_of_user = response.data
-          console.log('*******current_week_of_user, ', $scope.current_week_of_user)
+          // console.log('*******current_week_of_user, ', $scope.current_week_of_user)
           $scope.CURRENT_WEEK_OF_USER_LOADED = true
+          $scope.instantiateDays();
+          $scope.calculateSuccessRate();
         })
       }, 500)
     }
@@ -188,18 +209,18 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
 
   $scope.setCurrentFormOfUser = function() {
     if($scope.USER_FORM_UP_TO_DATE) {
-      console.log('user form is UP TO DATE')
+      // console.log('user form is UP TO DATE')
       var form_id = $scope.user.current_form
       FormsSvc.getUserForm(form_id).then(function(response) {
         $scope.current_form_of_user = response.data
-        console.log('current_form_of_user ==> , ', response.data)
+        // console.log('current_form_of_user ==> , ', response.data)
       })
     } else {
         if(!$scope.USER_HAS_CURRENT_FORM) {
-          console.log('user has no current FORM attribute')
+          // console.log('user has no current FORM attribute')
         }
-        console.log('USER_FORM_UP_TO_DATE: ', $scope.USER_FORM_UP_TO_DATE)
-        console.log('user form is OUT OF DATE')
+        // console.log('USER_FORM_UP_TO_DATE: ', $scope.USER_FORM_UP_TO_DATE)
+        // console.log('user form is OUT OF DATE')
         $scope.current_form_of_user = null
     } 
   }
@@ -251,14 +272,20 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
     }
   }
 
-  $scope.myVar = 'checked'
-  $scope.applyDisabled = function(complete_day) {
-    if (complete_day) {
-        return "disabled";
-    } else {
-        return ""
+  $scope.calculateSuccessRate = function() {
+    var points = 0;
+    var checks = $scope.current_week_of_user.checks;
+    var total = $scope.habit.timesperweek;
+
+    for(var day_index = 0; day_index < checks.length; day_index++) {
+      if(checks[day_index].complete){
+        points++;
+      }
     }
+    $scope.SUCCESS_RATE = points/total
+    return $scope.SUCCESS_RATE
   }
+   
 
   $scope.updateForm = function() {
       FormsSvc.updateWeekOfForm({
@@ -349,6 +376,44 @@ angular.module('app').service('FormsSvc', function($http) {
     return $http.post('/api/forms', form)
   }
 })
+angular.module('app').controller('HabitsCtrl', function($scope, HabitsSvc, FormsSvc) {
+  $scope.user = FormsSvc.getUser() // RETRIEVE THE USER
+  $scope.habits = []
+  $scope.addHabit = function() {
+    if ($scope.user && $scope.category && $scope.description && $scope.timesperweek) {
+      // $http.post('/api/posts', {
+      HabitsSvc.createNewHabit({
+        user: $scope.user,
+        category: $scope.category,
+        description: $scope.description,
+        timesperweek: $scope.timesperweek
+      }).success(function (habit) {
+        $scope.habits.unshift(habit)
+        $scope.username = null
+        $scope.category = null
+        $scope.description = null
+        $scope.timesperweek = null
+      })
+    }
+  }
+  // HabitsSvc.fetchAllHabits().success(function (habits) {
+  //   $scope.habits = habits
+  // })
+  HabitsSvc.fetchUserHabits($scope.user).then(function (response) {
+    $scope.habits = response.data
+  })
+})
+angular.module('app').service('HabitsSvc', function($http) {
+  this.fetchAllHabits = function() {
+    return $http.get('/api/habits')
+  }
+  this.createNewHabit = function (habit) {
+    return $http.post('/api/habits', habit)
+  }
+  this.fetchUserHabits = function (user) {
+    return $http.post('/api/habits/user_habits', { user: user })
+  }
+})
 angular.module('app').controller('LoginCtrl', function($scope, UserSvc) {
   $scope.login = function(username, password) {
     UserSvc.login(username, password)
@@ -356,11 +421,9 @@ angular.module('app').controller('LoginCtrl', function($scope, UserSvc) {
       $scope.$emit('login', response.data)
     })
   }
-
   $scope.emitLogin = function(response) {
   	$scope.$emit('login', response.data)
   }
-
   $scope.loginWithToken = function(token) {
   	console.log('LoginCtrl - loginWithToken')
     UserSvc.loginWithToken(token)
@@ -384,37 +447,6 @@ angular.module('app').service('LoginSvc', function($http, UserSvc) {
   }
 
 })
-angular.module('app').controller('PostsCtrl', function($scope, PostsSvc) {
-  $scope.posts = []
-  $scope.addPost = function() {
-    if ($scope.username && $scope.category && $scope.habit && $scope.timesperweek) {
-      // $http.post('/api/posts', {
-      PostsSvc.create({
-        username: $scope.username,
-        category: $scope.category,
-        habit: $scope.habit,
-        timesperweek: $scope.timesperweek
-      }).success(function (post) {
-        $scope.posts.unshift(post)
-        $scope.username = null
-        $scope.category = null
-        $scope.habit = null
-        $scope.timesperweek = null
-      })
-    }
-  }
-  PostsSvc.fetch().success(function (posts) {
-    $scope.posts = posts
-  })
-})
-angular.module('app').service('PostsSvc', function($http) {
-  this.fetch = function() {
-    return $http.get('/api/posts')
-  }
-  this.create = function (post) {
-    return $http.post('/api/posts', post)
-  }
-})
 angular.module('app').controller('RegisterCtrl', function($scope, UserSvc) {
   $scope.user = {}
   $scope.register = function(user) {
@@ -428,9 +460,10 @@ angular.module('app').controller('RegisterCtrl', function($scope, UserSvc) {
 angular.module('app').config(function ($routeProvider) {
   // $locationProvider.html5Mode(true)
   $routeProvider
-  .when('/', { controller: 'PostsCtrl', templateUrl: 'posts.html' })
+  .when('/', { controller: 'LoginCtrl', templateUrl: 'login.html' })
+  .when('/logout', { controller: 'ApplicationCtrl', templateUrl: 'logout.html' })
+  .when('/habits', { controller: 'HabitsCtrl', templateUrl: 'habits.html' })
   .when('/register', { controller: 'RegisterCtrl', templateUrl: 'register.html' })
-  .when('/login', { controller: 'LoginCtrl', templateUrl: 'login.html' })
   .when('/forms', { controller: 'FormsCtrl', templateUrl: 'forms.html' })
   .when('/admin', { controller: 'AdminCtrl', templateUrl: 'admin.html' })
   .when('/team', { controller: 'AdminCtrl', templateUrl: 'team.html' })
@@ -439,15 +472,8 @@ angular.module('app').config(function ($routeProvider) {
 angular.module('app').service('UserSvc', function($http) {
   var svc = this
 
-  // svc.setWeekTest = function(current_week) {
-  //   console.log('UserSvc - setWeekTest current_week: ', current_week)
-  //   return $http.post('/api/weeks', current_week)
-  // }
-
   svc.setNewWeek = function(user, current_week) {
-    // console.log('UserSvc - current_week, ', current_week)
     return $http.post('/api/weeks', current_week).then(function(response) {
-      // console.log('UserSvc - setWeek response.data, ', response.data)
       return $http.post('/api/users/setweek', {
         user: user,
         current_week: response.data
@@ -462,28 +488,13 @@ angular.module('app').service('UserSvc', function($http) {
       current_form: current_form
     })
   }
-// ***************************************************************
-  // svc.loginWithToken = function (token) {
-  //   console.log('UserSvc - loginWithToken....')
-  //   var user = svc.getUserWithToken(token).then(function(response) {
-  //     console.log('UserSvc - loginWithToken, response: ', response.data)
-  //     return { data: response.data }
-  //   })
-  //   // console.log('UserSvc - loginWithToken, user: ', user)
-  //   return user
-  // }
   svc.getUserWithToken = function(token) {
-    // console.log('UserSvc - getUserWithToken....')
     $http.defaults.headers.common['X-Auth'] = token
-    // console.log('UserSvc - getUserWithToken headers', $http.defaults.headers.common)
     var user = $http.get('/api/users').then(function(response) {
-       // console.log('UserSvc - getUserWithToken, response: ', response.data)
        return { data: response.data }
     })
-    // console.log('UserSvc - getUserWithToken, user: ', user)
     return user
   }
-// ***************************************************************
   svc.getUser = function() {
     return $http.get('/api/users')
   }
@@ -516,8 +527,6 @@ angular.module('app').service('UserSvc', function($http) {
     })
   }
 })
-
-// User's enter email, password, phone number, GLDI class, city, state, country, photo.
 angular.module('app').service('WeeksSvc', function($http) {
   this.getWeek = function(week_id) {
     return $http.post('/api/weeks/findOne', { week_id: week_id })
