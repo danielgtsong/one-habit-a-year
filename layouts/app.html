@@ -13,7 +13,7 @@
         <li><a href='/#/forms'>Form</a></li>
         <li><a href='/#/admin'>Admin</a></li>
         <li ng-if='!currentUser'><a href='/#/'>Login</a></li>
-        <li ng-if='currentUser'><a ng-click='logout' href='/#/logout'>Logout</a></li>
+        <li ng-if='currentUser'><a class='btn btn-default' ng-click='switchLoginStatus()' href='/#/logout'>Logout</a></li>
       </ul>
       <p ng-if='currentUser' class="navbar-text navbar-right">
         Signed in as {{currentUser.username}}
