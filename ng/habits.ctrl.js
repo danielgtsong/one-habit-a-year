@@ -1,6 +1,7 @@
 angular.module('app').controller('HabitsCtrl', function($scope, HabitsSvc, FormsSvc) {
   $scope.user = FormsSvc.getUser() // RETRIEVE THE USER
   $scope.habits = []
+  console.log('HabitsCtrl user: ', $scope.user)
   $scope.addHabit = function() {
     if ($scope.user && $scope.category && $scope.description && $scope.timesperweek) {
       // $http.post('/api/posts', {

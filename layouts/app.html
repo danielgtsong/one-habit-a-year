@@ -8,8 +8,8 @@
   <nav class='navbar navbar-default'>
     <div class='container'>
       <ul class='nav navbar-nav'>
-        <li><a href='/#/habits'>Habits</a></li>
-        <li><a href='/#/register'>Register</a></li>
+        <!-- <li><a href='/#/habits'>Habits</a></li> -->
+        <li ng-if='!currentUser'><a href='/#/register'>Register</a></li>
         <li><a href='/#/forms'>Form</a></li>
         <li><a href='/#/admin'>Admin</a></li>
         <li ng-if='!currentUser'><a href='/#/'>Login</a></li>

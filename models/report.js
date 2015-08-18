@@ -1,12 +1,20 @@
 var database = require('../database')
-var Week = database.model('Week', {
-  checks: { type: Array, required: true }, // array of check objects
-  currentdate: { type: String, required: true },
-  dayofyear: { type: Number, required: true },
-  dayofweek: { type: Number, required: true },
-  weekofyear: { type: Number, required: true },
-  weeksinyear: { type: Number, required: true },
-  year: { type: Number, required: true },
+var Report = database.model('Report', {
+  team_name: { type: String, required: true }, 
+  users_names: { type: Array, required: true }, // array of names
+  photos: { type: Array, required: true }, // array of photos
+  habit_completion: { type: Array, required: true },
+  weekly_goals: { type: Array, required: true },
+  success_rates: { type: Array, required: true },
+  team_success_rate: { type: Number, required: true },
   date: { type: Date, required: true, default: Date.now }
 })
-module.exports = Week
+module.exports = Report
+
+// •	Team name
+// •	User names
+// •	User photo
+// •	completion of each habit for each user on each day
+// •	each individual's weekly goal
+// •	each individual's success rate
+// •	team success rate

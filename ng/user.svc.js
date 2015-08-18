@@ -1,7 +1,8 @@
 angular.module('app').service('UserSvc', function($http) {
   var svc = this
 
-  svc.setNewWeek = function(user, current_week) {
+  svc.setNewUserWeek = function(user, current_week) {
+    // console.log('UserSvc setNewUserWeek')
     return $http.post('/api/weeks', current_week).then(function(response) {
       return $http.post('/api/users/setweek', {
         user: user,
