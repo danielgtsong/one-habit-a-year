@@ -30,7 +30,7 @@ angular.module('app').service('FormsSvc', function($http) {
     // console.log('FormsSvc getUser: ', this.user)
   	return this.user
   }
-  this.getCurrentWeek = function() {
+  this.getNewGeneratedWeek = function() {
     return $http.get('/api/forms/current_week').then(function(response) {
       return { data: response.data }
     })
@@ -44,10 +44,12 @@ angular.module('app').service('FormsSvc', function($http) {
         return { data: habit.data }
     }) 
   }
-  this.createForm = function (form) {
+  this.addNewForm = function (form) {
+      // console.log('FormsSvc addNewForm form: ', form)
     return $http.post('/api/forms', form).then(function(response) {
-      return { form: response.form,
-               current_week_of_user: response.current_week_of_user
+      // console.log('FormsSvc addNewForm response: ', response.data)
+      return { form: response.data.form,
+               current_week_of_user: response.data.current_week_of_user
              }
     })
   }

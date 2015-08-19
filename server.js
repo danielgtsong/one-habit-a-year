@@ -18,6 +18,7 @@ app.use('/api/teams', require('./controllers/api/teams'))
 app.use('/api/forms', require('./controllers/api/forms'))
 app.use('/api/habits', require('./controllers/api/habits'))
 app.use('/api/weeks', require('./controllers/api/weeks'))
+app.use('/api/reports', require('./controllers/api/reports'))
 
 // == modulearized to controllers/static.js ==
 // app.get('/', function(req, res) {

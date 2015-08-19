@@ -41,13 +41,15 @@ router.get('/current_week', function(req,res,next) {
 
 router.post('/', function(req,res,next) {
   console.log('router.post(/api/forms)')
+  
   var current_week_of_user = req.body.week
+  console.log('router.post(/api/forms) current_week_of_user: ', current_week_of_user)
   var form = new Form({
     user: req.body.user,
     category: req.body.category,
     habit: req.body.habit,
     timesperweek: req.body.timesperweek,
-    week: req.body.week
+    week: current_week_of_user
   })
   form.save(function (err,form) {
     if (err) { return next(err) }

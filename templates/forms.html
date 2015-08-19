@@ -1,5 +1,9 @@
 <div ng-controller='FormsCtrl' class='container'>
-  <h1>Form</h1>
+  <h1>Form</h1> 
+  <span style='display: inline-block; z-index: 10; margin-left: 750px;' class='input-group-btn'>
+      <button ng-if="!user.current_form || !USER_FORM_UP_TO_DATE" ng-click='addNewForm()' class='btn btn-default post-btn'>Add New Form</button>
+      <button ng-if="USER_FORM_UP_TO_DATE" ng-click='updateForm()' class='btn btn-default post-btn'>Update Form</button>
+  </span>
   <h2>Current Success Rate : {{ SUCCESS_RATE*100 }}%</h2>
 
   <div ng-show='!USER_HAS_CURRENT_HABIT_ATTRIBUTE'>
@@ -38,7 +42,7 @@
            <li>DAYS: {{ DAYS }} </li>
 
            <!-- SUNDAY --> 
-          <div class="checkbox " >
+          <div style='width: 200px;' class="checkbox" >
             <div style='margin-top: 20px; margin-bottom:10px;'>{{ current_week_of_user.checks[0].day }}</div>
             <label> <!-- ng-class: applyDisabled(day.complete); -->
               <span ng-click='switchDayComplete(0)' ng-show='DAYS.sunday_complete'><button type="button" class="btn btn-success">Complete</button></span>
@@ -46,7 +50,7 @@
             </label>
           </div>
            <!-- MONDAY -->
-          <div class="checkbox " >
+          <div style='width: 200px;' class="checkbox " >
             <div style='margin-top: 20px;'>{{ current_week_of_user.checks[1].day }}</div>
             <label> 
               <span ng-click='switchDayComplete(1)' ng-show='DAYS.monday_complete'><button type="button" class="btn btn-success">Complete</button></span>
@@ -54,7 +58,7 @@
             </label>
           </div>
           <!-- TUESDAY -->
-          <div class="checkbox " >
+          <div style='width: 200px;' class="checkbox " >
             <div style='margin-top: 20px;'>{{ current_week_of_user.checks[2].day }}</div>
             <label> 
               <span ng-click='switchDayComplete(2)' ng-show='DAYS.tuesday_complete'><button type="button" class="btn btn-success">Complete</button></span>
@@ -62,7 +66,7 @@
             </label>
           </div>
           <!-- WEDNESDAY -->
-          <div class="checkbox " >
+          <div style='width: 200px;' class="checkbox " >
             <div style='margin-top: 20px;'>{{ current_week_of_user.checks[3].day }}</div>
             <label> 
               <span ng-click='switchDayComplete(3)' ng-show='DAYS.wednesday_complete'><button type="button" class="btn btn-success">Complete</button></span>
@@ -70,7 +74,7 @@
             </label>
           </div>
           <!-- THURSDAY -->
-          <div class="checkbox " >
+          <div style='width: 200px;' class="checkbox " >
             <div style='margin-top: 20px;'>{{ current_week_of_user.checks[4].day }}</div>
             <label> 
               <span ng-click='switchDayComplete(4)' ng-show='DAYS.thursday_complete'><button type="button" class="btn btn-success">Complete</button></span>
@@ -78,7 +82,7 @@
             </label>
           </div>
           <!-- FRIDAY -->
-          <div class="checkbox " >
+          <div style='width: 200px;' class="checkbox " >
             <div style='margin-top: 20px;'>{{ current_week_of_user.checks[5].day }}</div>
             <label> 
               <span ng-click='switchDayComplete(5)' ng-show='DAYS.friday_complete'><button type="button" class="btn btn-success">Complete</button></span>
@@ -86,7 +90,7 @@
             </label>
           </div>
           <!-- SATURDAY -->
-          <div class="checkbox " >
+          <div style='width: 200px;' class="checkbox " >
             <div style='margin-top: 20px;'>{{ current_week_of_user.checks[6].day }}</div>
             <label> 
               <span ng-click='switchDayComplete(6)' ng-show='DAYS.saturday_complete'><button type="button" class="btn btn-success">Complete</button></span>
@@ -94,10 +98,6 @@
             </label>
           </div>
 
-          <span class='input-group-btn'>
-            <button ng-if="!user.current_form || !USER_FORM_UP_TO_DATE" ng-click='addNewForm()' class='btn btn-default post-btn'>Add New Form</button>
-            <button ng-if="USER_FORM_UP_TO_DATE" ng-click='updateForm()' class='btn btn-default post-btn'>Update Form</button>
-          </span>
         </div>
       </div>
     </form>
