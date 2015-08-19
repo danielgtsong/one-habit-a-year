@@ -41,6 +41,7 @@ router.get('/current_week', function(req,res,next) {
 
 router.post('/', function(req,res,next) {
   console.log('router.post(/api/forms)')
+  var current_week_of_user = req.body.week
   var form = new Form({
     user: req.body.user,
     category: req.body.category,
@@ -50,7 +51,11 @@ router.post('/', function(req,res,next) {
   })
   form.save(function (err,form) {
     if (err) { return next(err) }
-    res.status(201).json(form)
+    var response = {
+      form: form,
+      current_week_of_user: current_week_of_user
+    }
+    res.json(response)
     console.log('New Form: ' + form)
   })
 })

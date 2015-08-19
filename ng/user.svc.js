@@ -12,7 +12,7 @@ angular.module('app').service('UserSvc', function($http) {
       })
     })
   }
-  svc.setForm = function(user, current_form) {
+  svc.setNewUserForm = function(user, current_form) {
     return $http.post('/api/users/setform', {
       user: user,
       current_form: current_form

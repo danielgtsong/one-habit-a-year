@@ -40,6 +40,8 @@ router.post('/setweek', function(req,res,next) {
 router.post('/setform', function(req,res,next) {
   var user = req.body.user
   var current_form = req.body.current_form
+  // console.log('/setform, user', user)
+  // console.log('/setform, current_form' current_form)
   User.findOne({ _id: user._id }, function(err, found_user) {
     if (err) { return next(err)}
     found_user.current_form = current_form;

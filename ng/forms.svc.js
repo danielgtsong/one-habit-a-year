@@ -45,6 +45,10 @@ angular.module('app').service('FormsSvc', function($http) {
     }) 
   }
   this.createForm = function (form) {
-    return $http.post('/api/forms', form)
+    return $http.post('/api/forms', form).then(function(response) {
+      return { form: response.form,
+               current_week_of_user: response.current_week_of_user
+             }
+    })
   }
 })

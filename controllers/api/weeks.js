@@ -1,20 +1,6 @@
 var Week = require('../../models/week')
 var router = require('express').Router()
 
-// router.post('/update', function(req,res,next) {
-//   console.log('router.post(/api/forms/update)')
-//   var form = req.body.form
-//   var week = req.body.week
-//   Form.findOne({ _id: form._id }, function(err, found_form) {
-//     if (err) { return next(err)}
-//     found_form.week = week;
-//     found_form.save(function (err) {
-//       if (err) { return next(err) }
-//       res.sendStatus(201)
-//     })
-//   });
-// })
-
 router.post('/update', function(req,res,next) {
   console.log('router.post(/api/weeks/update)')
   var week = req.body.week

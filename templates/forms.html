@@ -2,7 +2,7 @@
   <h1>Form</h1>
   <h2>Current Success Rate : {{ SUCCESS_RATE*100 }}%</h2>
 
-  <div ng-show='!USER_HAS_CURRENT_HABIT'>
+  <div ng-show='!USER_HAS_CURRENT_HABIT_ATTRIBUTE'>
     <h3>Set Habit</h3>
     <form role='form'>
       <div class='form-group'>
@@ -35,6 +35,7 @@
           <li>Description: {{ habit.description }} </li>
           <li>TimesPerWeek: {{ habit.timesperweek }} </li>
            <li>Week: {{ current_week_of_user.checks }} </li>
+           <li>DAYS: {{ DAYS }} </li>
 
            <!-- SUNDAY --> 
           <div class="checkbox " >
@@ -94,8 +95,8 @@
           </div>
 
           <span class='input-group-btn'>
-            <button ng-if="!user.current_form" ng-click='addForm()' class='btn btn-default post-btn'>Add Form</button>
-            <button ng-if="user.current_form" ng-click='updateForm()' class='btn btn-default post-btn'>Update Form</button>
+            <button ng-if="!user.current_form || !USER_FORM_UP_TO_DATE" ng-click='addNewForm()' class='btn btn-default post-btn'>Add New Form</button>
+            <button ng-if="USER_FORM_UP_TO_DATE" ng-click='updateForm()' class='btn btn-default post-btn'>Update Form</button>
           </span>
         </div>
       </div>
