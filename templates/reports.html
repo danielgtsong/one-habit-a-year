@@ -1,0 +1,22 @@
+<div ng-controller='ReportsCtrl' class='container'>
+  <h1>Reports</h1> 
+
+  <div>
+    <h3>Set Habit</h3>
+    <form role='form'>
+      <div class='form-group'>
+        <div class='input-group'>
+
+          <input ng-model='team_name' class='form-control' placeholder='team name' id='username' />
+          <input ng-model='description' class='form-control' placeholder='description' id='habit' />
+          <input ng-model='timesperweek' class='form-control' placeholder='timesperweek' id='timesperweek' />
+
+          <span class='input-group-btn'>
+            <button ng-click='generateReports()' class='btn btn-default post-btn'>Generate Reports</button>
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>

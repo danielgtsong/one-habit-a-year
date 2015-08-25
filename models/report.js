@@ -1,7 +1,7 @@
 var database = require('../database')
 var Report = database.model('Report', {
   team_name: { type: String, required: true }, 
-  users_names: { type: Array, required: true }, // array of names
+  user_names: { type: Array, required: true }, // array of names
   photos: { type: Array, required: true }, // array of photos
   habit_completion: { type: Array, required: true },
   weekly_goals: { type: Array, required: true },

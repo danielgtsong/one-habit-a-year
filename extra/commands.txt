@@ -11,10 +11,10 @@ db.users.update(
 )
 
 db.users.update(
-	 { _id: ObjectId("55c933f3defcdd037f43f7ab") },
+	 { _id: ObjectId("55d524d2390805064d574870") },
 	 { $set: 
 	   {
-	     current_week: null
+	     admin: true
 	   }
 	}
 )

@@ -10,8 +10,8 @@
       <ul class='nav navbar-nav'>
         <!-- <li><a href='/#/habits'>Habits</a></li> -->
         <li ng-if='!currentUser'><a href='/#/register'>Register</a></li>
-        <li><a href='/#/forms'>Form</a></li>
-        <li><a href='/#/admin'>Admin</a></li>
+        <li ng-if='currentUser'><a href='/#/forms'>Form</a></li>
+        <li ng-if='currentUser.admin'><a href='/#/admin'>Admin</a></li>
         <li ng-if='!currentUser'><a href='/#/'>Login</a></li>
         <li ng-if='currentUser'><a class='btn btn-default' ng-click='switchLoginStatus()' href='/#/logout'>Logout</a></li>
       </ul>

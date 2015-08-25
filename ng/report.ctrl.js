@@ -9,7 +9,7 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
     // console.log('generateNewCurrentWeek')
     FormsSvc.getNewGeneratedWeek().then(function(response) { // SET THE CURRENT WEEK
       $scope.generated_week = response.data
-      // console.log('current_week generated ', $scope.generated_week)
+      console.log('current_week generated ', $scope.generated_week)
       $scope.GENERATED_WEEK_LOADED = true
       $scope.$emit('GENERATED_WEEK_LOADED', true);
     })
@@ -53,27 +53,20 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
         // console.log('getUserCurrentWeek CURRENT_WEEK_OF_USER_LOADED, ', $scope.current_week_of_user_LOADED)
       })
     } else {
-      console.log('setNewUserWeek with generated_week');
       $scope.setNewUserWeek($scope.generated_week); // give the user a new week, if he doesnt have the attribute
     }
   }
   $scope.setNewUserWeek = function(current_week) {
-    if(!$scope.GENERATED_WEEK_LOADED) {
-      setTimeout(function(){}, 500)
-    }
-    if($scope.GENERATED_WEEK_LOADED) {
-      console.log('FormsCtrl GENERATED_WEEK_LOADED: ', $scope.GENERATED_WEEK_LOADED)
-      console.log('setNewUserWeek current_week passed in here', current_week)
-      UserSvc.setNewUserWeek($scope.user, current_week).then(function(response) {
-        $scope.current_week_of_user = response.data
-        // console.log('setNewUserWeek response.data, ', response.data)
-        // console.log('setNewUserWeek current_week_of_user, ', $scope.current_week_of_user)
-        // console.log('setNewUserWeek current_week_of_user weekofyear, ', $scope.current_week_of_user.weekofyear)
-        $scope.current_week_of_user_LOADED = true
-        $scope.$emit('CURRENT_WEEK_OF_USER_LOADED', true);
-        // console.log('setNewUserWeek CURRENT_WEEK_OF_USER_LOADED, ', $scope.current_week_of_user_LOADED)
-      })
-    }
+    console.log('setNewUserWeek current_week passed in', current_week)
+    UserSvc.setNewUserWeek($scope.user, current_week).then(function(response) {
+      $scope.current_week_of_user = response.data
+      // console.log('setNewUserWeek response.data, ', response.data)
+      // console.log('setNewUserWeek current_week_of_user, ', $scope.current_week_of_user)
+      // console.log('setNewUserWeek current_week_of_user weekofyear, ', $scope.current_week_of_user.weekofyear)
+      $scope.current_week_of_user_LOADED = true
+      $scope.$emit('CURRENT_WEEK_OF_USER_LOADED', true);
+      // console.log('setNewUserWeek CURRENT_WEEK_OF_USER_LOADED, ', $scope.current_week_of_user_LOADED)
+    })
   }
   
   $scope.DAYS = {
@@ -221,7 +214,7 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
         timesperweek: $scope.habit.timesperweek,
         week: generated_week  
       }).then(function (response) {
-        console.log('AddNewForm response.current_week_of_user: ', response.current_week_of_user)
+        // console.log('AddNewForm response: ', response)
         UserSvc.setNewUserForm($scope.user, response.form)
         $scope.setNewUserWeek(response.current_week_of_user);
       })
