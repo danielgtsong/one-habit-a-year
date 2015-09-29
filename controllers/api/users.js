@@ -4,14 +4,17 @@ var jwt = require('jwt-simple')
 var jwt_persist = require('jsonwebtoken'); // used to create, sign and verify tokens
 var User = require('../../models/user')
 var config = require('../../config')
+var fs = require('fs');
 
 router.post('/', function(req,res,next) {
   var user = new User({
     username: req.body.username,
     name: req.body.name,
     email: req.body.email,
-    phone: req.body.phone, year: req.body.year,
-    city: req.body.city, state: req.body.state, 
+    phone: req.body.phone, 
+    year: req.body.year,
+    city: req.body.city, 
+    state: req.body.state, 
     country: req.body.country
   })
   bcrypt.hash(req.body.password, 10, function(err, hash) {
@@ -19,9 +22,22 @@ router.post('/', function(req,res,next) {
     user.password = hash
     user.save(function (err) {
       if (err) { return next(err) }
-      res.sendStatus(201)
+      res.sendStatus(201).json(user);
     })
   })
+})
+
+router.post('/profile_photo', function(req,res,next) {
+  var user = req.body.user
+  var photo = req.body.profile_photo
+  User.findOne({ _id: user._id }, function(err, found_user) {
+    if (err) { return next(err)}
+    found_user.profile_photo = photo;
+    found_user.save(function (err) {
+      if (err) { return next(err) }
+      res.sendStatus(201)
+    })
+  });
 })
 
 router.post('/setweek', function(req,res,next) {

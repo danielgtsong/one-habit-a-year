@@ -3,7 +3,7 @@ angular.module('app').service('UserSvc', function($http) {
 
   svc.setNewUserWeek = function(user, current_week) {
     // console.log('UserSvc setNewUserWeek')
-    return $http.post('/api/weeks', current_week).then(function(response) {
+    return $http.post('/api/weeks', { current_week: current_week }).then(function(response) {
       return $http.post('/api/users/setweek', {
         user: user,
         current_week: response.data
@@ -30,7 +30,8 @@ angular.module('app').service('UserSvc', function($http) {
   }
   svc.login = function (username, password) {
     return $http.post('/api/sessions', {
-      username: username, password: password
+      username: username, 
+      password: password
     }).then(function (val) {
       svc.token = val.data
       window.localStorage.token = val.data
@@ -41,11 +42,16 @@ angular.module('app').service('UserSvc', function($http) {
   svc.createUser = function(user) {
     // create user
     return $http.post('/api/users', {
-      username: user.username, password: user.password, 
-      name: user.name, email: user.email,
-      phone: user.phone, year: user.year,
-      city: user.city, state: user.state, country: user.country
-    }).then(function () {
+      username: user.username, 
+      password: user.password, 
+      name: user.name, 
+      email: user.email,
+      phone: user.phone, 
+      year: user.year,
+      city: user.city, 
+      state: user.state, 
+      country: user.country
+    }).then(function (data) {
       return svc.login(user.username, user.password)
     })
     // redirect to login page

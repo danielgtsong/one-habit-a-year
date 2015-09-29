@@ -3,13 +3,11 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
   $scope.setUser = function() {
     // console.log('setUser')
     $scope.user = FormsSvc.getUser() // RETRIEVE THE USER
-    // console.log('FormsCtrl user ', $scope.user)
   }
   $scope.generateNewCurrentWeek = function() {
     // console.log('generateNewCurrentWeek')
     FormsSvc.getNewGeneratedWeek().then(function(response) { // SET THE CURRENT WEEK
       $scope.generated_week = response.data
-      // console.log('current_week generated ', $scope.generated_week)
       $scope.GENERATED_WEEK_LOADED = true
       $scope.$emit('GENERATED_WEEK_LOADED', true);
     })
@@ -38,7 +36,6 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
   $scope.getUserCurrentWeek = function() {
     // console.log('getUserCurrentWeek')
     if($scope.USER_HAS_CURRENT_WEEK_ATTRIBUTE) {
-      // console.log('getUserCurrentWeek USER_HAS_CURRENT_WEEK_ATTRIBUTE, ', $scope.USER_HAS_CURRENT_WEEK_ATTRIBUTE)
       var week_id = $scope.user.current_week
       WeeksSvc.getWeek(week_id).then(function(response) {
         if(!$scope.GENERATED_WEEK_LOADED) {
@@ -47,35 +44,26 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
           }, 250)
         } 
         $scope.current_week_of_user = response.data
-        // console.log('getUserCurrentWeek current_week_of_user, ', $scope.current_week_of_user)
         $scope.current_week_of_user_LOADED = true
         $scope.$emit('CURRENT_WEEK_OF_USER_LOADED', true);
-        // console.log('getUserCurrentWeek CURRENT_WEEK_OF_USER_LOADED, ', $scope.current_week_of_user_LOADED)
       })
     } else {
-      console.log('setNewUserWeek with generated_week');
-      $scope.setNewUserWeek($scope.generated_week); // give the user a new week, if he doesnt have the attribute
+      $scope.setNewUserWeek($scope.generated_week); // give the user a new week if there is no attribute
     }
   }
   $scope.setNewUserWeek = function(current_week) {
+    // console.log('setNewUserWeek');
     if(!$scope.GENERATED_WEEK_LOADED) {
       setTimeout(function(){}, 500)
     }
     if($scope.GENERATED_WEEK_LOADED) {
-      console.log('FormsCtrl GENERATED_WEEK_LOADED: ', $scope.GENERATED_WEEK_LOADED)
-      console.log('setNewUserWeek current_week passed in here', current_week)
       UserSvc.setNewUserWeek($scope.user, current_week).then(function(response) {
         $scope.current_week_of_user = response.data
-        // console.log('setNewUserWeek response.data, ', response.data)
-        // console.log('setNewUserWeek current_week_of_user, ', $scope.current_week_of_user)
-        // console.log('setNewUserWeek current_week_of_user weekofyear, ', $scope.current_week_of_user.weekofyear)
         $scope.current_week_of_user_LOADED = true
         $scope.$emit('CURRENT_WEEK_OF_USER_LOADED', true);
-        // console.log('setNewUserWeek CURRENT_WEEK_OF_USER_LOADED, ', $scope.current_week_of_user_LOADED)
       })
     }
   }
-  
   $scope.DAYS = {
       sunday_complete: false,
       monday_complete: false,
@@ -86,6 +74,7 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
       saturday_complete: false
   }
   $scope.instantiateDays = function() {
+    // console.log('instantiateDays');
     if($scope.current_week_of_user_LOADED) {
       // console.log('instantiateDays current_week_of_user, ', $scope.current_week_of_user)
       var current_week_of_user = $scope.current_week_of_user
@@ -123,9 +112,8 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
     }
   }
   $scope.checkIfUserAttributesAreUpToDate = function() {
+    // console.log('checkIfUserAttributesAreUpToDate')
     if($scope.current_week_of_user_LOADED && $scope.GENERATED_WEEK_LOADED) {
-      // console.log('user week of year ', $scope.current_week_of_user.weekofyear)
-      // console.log('generated week of year ', $scope.generated_week.weekofyear)
       if($scope.current_week_of_user.weekofyear < $scope.generated_week.weekofyear) {
         $scope.USER_WEEK_UP_TO_DATE = false;
         $scope.USER_FORM_UP_TO_DATE = false;
@@ -143,7 +131,6 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
       var form_id = $scope.user.current_form
       FormsSvc.getUserForm(form_id).then(function(response) {
         $scope.current_form_of_user = response.data
-        // console.log('current_form_of_user ==> , ', response.data)
       })
     } else {
       console.log('user form is OUT OF DATE')
@@ -158,6 +145,7 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
   $scope.getUserCurrentWeek();
 
   $scope.setDaysAndSuccessRate = function() {
+    // console.log('setDaysAndSuccessRate');
     $scope.instantiateDays();
     $scope.calculateSuccessRate();
   }
@@ -170,6 +158,7 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
   });
   
   $scope.switchDayComplete = function(day_index) {
+    // console.log('switchDayComplete');
     $scope.current_week_of_user.checks[day_index].complete = !($scope.current_week_of_user.checks[day_index].complete)
     switch(day_index) {
       case 0:
@@ -197,7 +186,7 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
   }
 
   $scope.updateForm = function() {
-    // console.log('************updateForm******************')
+    // console.log('updateForm')
       FormsSvc.updateWeekOfForm({
         form: $scope.current_form_of_user,
         week: $scope.current_week_of_user      
@@ -210,10 +199,10 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
   var generated_week;
   $scope.$on('GENERATED_WEEK_LOADED', function(event, data) { 
     generated_week = $scope.generated_week;
-    // console.log('generated_week: ', generated_week)
   });
 
   $scope.addNewForm = function() {
+      // console.log('addNewForm')
       FormsSvc.addNewForm({
         user: $scope.user,
         category: $scope.habit.category,
@@ -228,6 +217,7 @@ angular.module('app').controller('FormsCtrl', function($scope, FormsSvc, UserSvc
   }
 
   $scope.addHabit = function() {
+      // console.log('addHabit');
       FormsSvc.createHabit({
         user: $scope.user,
         category: $scope.category,

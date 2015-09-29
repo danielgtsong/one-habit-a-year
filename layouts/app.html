@@ -9,6 +9,7 @@
     <div class='container'>
       <ul class='nav navbar-nav'>
         <!-- <li><a href='/#/habits'>Habits</a></li> -->
+        <li><a href='/#/photos'>Photos</a></li>
         <li ng-if='!currentUser'><a href='/#/register'>Register</a></li>
         <li ng-if='currentUser'><a href='/#/forms'>Form</a></li>
         <li ng-if='currentUser.admin'><a href='/#/admin'>Admin</a></li>
@@ -21,8 +22,12 @@
     </div>
   </nav>
   <div ng-view></div>
+  <!-- 'https://code.jquery.com/jquery-2.1.4.min.js' -->
+  <script></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-route.js'></script>
+  <script src="/ng-file-upload-shim.min.js"></script>
+  <script src="/ng-file-upload.min.js"></script>
   <script src='/app.js'></script>
 
 </body>

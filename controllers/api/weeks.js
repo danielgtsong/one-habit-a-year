@@ -15,15 +15,16 @@ router.post('/update', function(req,res,next) {
 })
 
 router.post('/', function(req,res,next) {
-  console.log('router.post(/api/weeks)', req.body)
+  console.log('router.post(/api/weeks) req_body: ', req.body.current_week)
+  var current_week = req.body.current_week;
   var week = new Week({
-    checks: req.body.checks, // array of check objects
-    currentdate: req.body.currentdate,
-    dayofyear: req.body.dayofyear,
-    dayofweek: req.body.dayofweek,
-    weekofyear: req.body.weekofyear,
-    weeksinyear: req.body.weeksinyear,
-    year: req.body.year
+    checks: current_week.checks, // array of check objects
+    currentdate: current_week.currentdate,
+    dayofyear: current_week.dayofyear,
+    dayofweek: current_week.dayofweek,
+    weekofyear: current_week.weekofyear,
+    weeksinyear: current_week.weeksinyear,
+    year: current_week.year
   })
   week.save(function (err,week) {
     if (err) { return next(err) }
