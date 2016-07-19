@@ -4,3 +4,4 @@
 # sudo npm install
 # gulp dev // to start server
 # nodemon server.js
+# url: localhost:3000

@@ -1,4 +1,4 @@
-angular.module('app', ['ngRoute', 'ngFileUpload'])
+angular.module('app', ['ngRoute'])
 angular.module('app').controller('AdminCtrl', function($scope, AdminSvc) {
   
   AdminSvc.fetchUsers().success(function (users) {
