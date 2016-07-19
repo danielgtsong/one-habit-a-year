@@ -1,6 +1,0 @@
-[
-	{"_id":"55c29f0a0fc2bceb58938a37","username":"jkim","name":"John Kim","email":"jkim@@","phone":"12345","year":"2007","city":"Los Angeles","state":"CA","country":"USA","__v":0,"$$hashKey":"object:5"},
-	{"_id":"55c29ff1ce7fcadf592f7e21","username":"user1","name":"lkjlkj","email":"lkj","phone":"lkj","year":"2010","city":"laskjdflskdjf","state":"aslkdfjlaskfj","country":"laskdjfklsadf","__v":0,"$$hashKey":"object:6"},
-	{"_id":"55c2a071ce7fcadf592f7e22","username":"anotherguy","name":"james","email":"asldkjfslkfaj","phone":"alsdkfjlaksfj","year":"2010","city":"alsdkjfaklsjf","state":"lakjdkflja","country":"asldfkjasldkfj","__v":0,"$$hashKey":"object:7"},
-	{"_id":"55c2a07fce7fcadf592f7e23","username":"mybadd","name":"john","email":"asldkjfslkfaj","phone":"alsdkfjlaksfj","year":"2010","city":"alsdkjfaklsjf","state":"lakjdkflja","country":"asldfkjasldkfj","__v":0,"$$hashKey":"object:8"}
-]
