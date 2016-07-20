@@ -1,6 +1,9 @@
 var express = require('express')
 var app = express()
+var bodyParser = require('body-parser')
 var fileUpload = require('express-fileupload');
+
+app.use(bodyParser.json())
 app.use(fileUpload()); // default options
 
 var database = require('./database')

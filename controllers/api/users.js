@@ -22,7 +22,7 @@ router.post('/', function(req,res,next) {
     user.password = hash
     user.save(function (err) {
       if (err) { return next(err) }
-      res.sendStatus(201).json(user);
+      res.status(201).json(user);
     })
   })
 })

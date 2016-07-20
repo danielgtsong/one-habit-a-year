@@ -5,7 +5,7 @@ var Week = require('./week')
 var Form = require('./form')
 
 var user = db.Schema({
-  username: { type: String, required: true },
+  username: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true, select: false },
   name: { type: String },
   email: { type: String },
